@@ -169,5 +169,5 @@ own Enter behavior. `IslandsPrimaryButton()` only sets the visual style.
 
 ## License
 
-MIT — see [`LICENSE`](LICENSE). Islands is by FormDev Software GmbH and is used here only as the reference
+MIT — see [`LICENSE`](https://github.com/nilaoda/MewUI.Themes.Islands/blob/main/LICENSE). Islands is by FormDev Software GmbH and is used here only as the reference
 for its published color values.
