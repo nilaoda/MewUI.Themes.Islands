@@ -1,0 +1,17 @@
+<Project>
+
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>false</CentralPackageTransitivePinningEnabled>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Core only, never the Aprillz.MewUI meta-package: it would drag every platform backend
+         onto every consumer of the theme. -->
+    <PackageVersion Include="Aprillz.MewUI.Core" Version="0.22.1" />
+
+    <!-- xunit.v3 ships its own Microsoft.Testing.Platform entry point. -->
+    <PackageVersion Include="xunit.v3" Version="4.0.2" />
+  </ItemGroup>
+
+</Project>

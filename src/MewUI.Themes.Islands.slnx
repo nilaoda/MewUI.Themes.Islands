@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="MewUI.Themes.Islands/MewUI.Themes.Islands.csproj" />
+  <Project Path="MewUI.Themes.Islands.Tests/MewUI.Themes.Islands.Tests.csproj" />
+</Solution>

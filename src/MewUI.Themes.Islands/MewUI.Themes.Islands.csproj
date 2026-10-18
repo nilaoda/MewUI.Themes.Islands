@@ -1,0 +1,58 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- Match Aprillz.MewUI.Core's TFM surface (it ships assets for both lib/net8.0 and lib/net10.0). -->
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
+    <RootNamespace>MewUI.Themes.Islands</RootNamespace>
+    <AssemblyName>MewUI.Themes.Islands</AssemblyName>
+    <IsAotCompatible>true</IsAotCompatible>
+    <BuiltInComInteropSupport>false</BuiltInComInteropSupport>
+    <!--
+      Two pieces of the window chrome hand over a function pointer or take one apart: the Win32 subclass
+      procedure, which is the AOT-correct way to install a subclass (a delegate would have to be kept alive
+      and marshalled separately), and the AppKit call that reads a screen's visible frame, whose selector and
+      class name are passed as byte pointers. That is the only reason this is on.
+    -->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- NuGet packaging metadata. -->
+    <IsPackable>true</IsPackable>
+    <PackageId>MewUI.Themes.Islands</PackageId>
+    <Authors>nilaoda</Authors>
+    <Description>Islands theme for MewUI: JetBrains’ New UI color tables and metrics, dark and light, as per-control style rules plus semantic extension methods.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>mewui;theme;expui;newui;jetbrains;nativeaot</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageReleaseNotes>Initial release: Islands dark and light colors, metrics and styles.</PackageReleaseNotes>
+    <PackageProjectUrl>https://github.com/nilaoda/MewUI.Themes.Islands</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/nilaoda/MewUI.Themes.Islands.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!--
+      Core only, never the Aprillz.MewUI meta-package: the meta-package would drag the Win32/Direct2D/
+      Metal/X11 platform backends onto every consumer of the theme, and a theme library has no business
+      choosing a backend.
+    -->
+    <PackageReference Include="Aprillz.MewUI.Core" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Exposed only to this library's own test project; the host app uses the public API. -->
+    <InternalsVisibleTo Include="MewUI.Themes.Islands.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="/" Visible="false" />
+    <None Include="LICENSE" Pack="true" PackagePath="/" Visible="false" />
+    <None Include="docs/**" Pack="true" PackagePath="contentFiles/any/any/docs" Visible="false" />
+  </ItemGroup>
+
+</Project>

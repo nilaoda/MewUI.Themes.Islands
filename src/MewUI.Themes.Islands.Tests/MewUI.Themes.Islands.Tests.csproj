@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>
+    <IsAotCompatible>false</IsAotCompatible>
+    <RootNamespace>MewUI.Themes.Islands.Tests</RootNamespace>
+    <!-- The tests are a console runner (xunit.v3's Microsoft.Testing.Platform entry point). -->
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="xunit.v3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MewUI.Themes.Islands\MewUI.Themes.Islands.csproj" />
+  </ItemGroup>
+
+</Project>

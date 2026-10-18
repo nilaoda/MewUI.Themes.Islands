@@ -1,0 +1,25 @@
+# Build output
+[Bb]in/
+[Oo]bj/
+artifacts/
+TestResults/
+*.binlog
+
+# IDE / editor
+.vs/
+.idea/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# NuGet
+*.nupkg
+*.snupkg
+*.symbols.nupkg
+
+# macOS
+.DS_Store
+._*
+*.dSYM/
