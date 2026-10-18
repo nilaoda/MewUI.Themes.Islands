@@ -1,7 +1,9 @@
 using Aprillz.MewUI;
 using Aprillz.MewUI.Controls;
+using MewUI.Themes.Islands.Drawing;
+using MewUI.Themes.Islands.Theming;
 
-namespace MewUI.Themes.Islands;
+namespace MewUI.Themes.Islands.Styles;
 
 /// <summary>
 /// The Islands switch: a compact 32 x 18 capsule with a 14 DIP thumb, drawn by

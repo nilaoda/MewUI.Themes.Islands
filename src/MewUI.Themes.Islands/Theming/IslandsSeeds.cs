@@ -1,6 +1,6 @@
 using Aprillz.MewUI;
 
-namespace MewUI.Themes.Islands;
+namespace MewUI.Themes.Islands.Theming;
 
 /// <summary>
 /// MewUI seed colors, chosen so that what MewUI <em>derives</em> from them stays readable.

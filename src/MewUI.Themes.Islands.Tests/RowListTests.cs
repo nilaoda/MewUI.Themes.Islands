@@ -1,5 +1,6 @@
 using Aprillz.MewUI.Controls;
 using Xunit;
+using MewUI.Themes.Islands.Controls;
 
 namespace MewUI.Themes.Islands.Tests;
 

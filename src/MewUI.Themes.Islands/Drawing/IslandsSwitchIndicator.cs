@@ -2,7 +2,7 @@ using Aprillz.MewUI;
 using Aprillz.MewUI.Controls;
 using Aprillz.MewUI.Rendering;
 
-namespace MewUI.Themes.Islands;
+namespace MewUI.Themes.Islands.Drawing;
 
 /// <summary>
 /// The Islands switch: a capsule track with a circular thumb at one end.

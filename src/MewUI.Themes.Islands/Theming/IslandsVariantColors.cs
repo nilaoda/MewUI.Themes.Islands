@@ -1,6 +1,6 @@
 using Aprillz.MewUI;
 
-namespace MewUI.Themes.Islands;
+namespace MewUI.Themes.Islands.Theming;
 
 /// <summary>
 /// One variant (light or dark) of the Islands color table.

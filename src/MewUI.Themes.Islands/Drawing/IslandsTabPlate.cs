@@ -2,8 +2,10 @@ using System.Runtime.CompilerServices;
 using Aprillz.MewUI;
 using Aprillz.MewUI.Controls;
 using Aprillz.MewUI.Rendering;
+using MewUI.Themes.Islands.Styles;
+using MewUI.Themes.Islands.Theming;
 
-namespace MewUI.Themes.Islands;
+namespace MewUI.Themes.Islands.Drawing;
 
 /// <summary>
 /// Dresses a tab strip the way Islands does: every tab is a chip, and the strip is closed by the one pixel

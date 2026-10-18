@@ -1,27 +1,9 @@
 using Aprillz.MewUI;
 using Aprillz.MewUI.Controls;
 using Aprillz.MewUI.Rendering;
+using MewUI.Themes.Islands.Theming;
 
-namespace MewUI.Themes.Islands;
-
-/// <summary>One row of an <see cref="IslandsContextMenu"/>. Separators carry no text or action.</summary>
-public sealed class IslandsMenuItem
-{
-    public string Text { get; init; } = string.Empty;
-
-    /// <summary>Builds the 16 DIP glyph for this row; called once per open.</summary>
-    public Func<FrameworkElement>? Glyph { get; init; }
-
-    /// <summary>The action run after the menu has closed.</summary>
-    public Action? Invoke { get; init; }
-
-    /// <summary>Evaluated when the menu opens.</summary>
-    public Func<bool>? IsEnabled { get; init; }
-
-    public bool IsSeparator { get; init; }
-
-    public static IslandsMenuItem Separator { get; } = new() { IsSeparator = true };
-}
+namespace MewUI.Themes.Islands.Menus;
 
 /// <summary>
 /// Islands' self-drawn context menu: a flat panel hosted in the window's overlay layer rather than a

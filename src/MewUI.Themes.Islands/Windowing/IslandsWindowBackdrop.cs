@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-namespace MewUI.Themes.Islands;
+namespace MewUI.Themes.Islands.Windowing;
 
 /// <summary>
 /// The Windows 11 system backdrop (Mica) behind a window, and whether this machine can draw it.

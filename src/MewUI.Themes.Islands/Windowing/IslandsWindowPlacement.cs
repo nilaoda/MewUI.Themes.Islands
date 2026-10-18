@@ -3,7 +3,7 @@ using System.Text;
 using Aprillz.MewUI;
 using Aprillz.MewUI.Controls;
 
-namespace MewUI.Themes.Islands;
+namespace MewUI.Themes.Islands.Windowing;
 
 /// <summary>
 /// Where a window that drew its own title bar lands, on the one platform that puts it in the wrong place.

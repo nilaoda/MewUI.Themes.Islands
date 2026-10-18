@@ -1,4 +1,5 @@
 using Xunit;
+using MewUI.Themes.Islands.Windowing;
 
 namespace MewUI.Themes.Islands.Tests;
 
@@ -13,8 +14,8 @@ namespace MewUI.Themes.Islands.Tests;
 /// </remarks>
 public class WindowPlacementTests
 {
-    private const string Placement = "IslandsWindowPlacement.cs";
-    private const string Chrome = "IslandsWindowChrome.cs";
+    private const string Placement = "Windowing/IslandsWindowPlacement.cs";
+    private const string Chrome = "Windowing/IslandsWindowChrome.cs";
 
     /// <summary>
     /// The platform's biased answer is only wrong on macOS, so the claim that replaces it must not be made
@@ -54,7 +55,7 @@ public class WindowPlacementTests
         Assert.Contains("internal void ApplyPlacement() => _placement.Place();", chrome, StringComparison.Ordinal);
 
         // And the entry point that builds it subscribes that placement to the same event as the insets.
-        string entry = Method("    public static IslandsWindowChrome IslandsFramelessChrome<TWindow>(this TWindow window)", Chrome);
+        string entry = Method("    public static IslandsWindowChrome IslandsFramelessChrome<TWindow>(this TWindow window)", "Extensions/IslandsWindowChromeExtensions.cs");
 
         Assert.Contains("window.Loaded += chrome.ApplyInsets;", entry, StringComparison.Ordinal);
         Assert.Contains("window.Loaded += chrome.ApplyPlacement;", entry, StringComparison.Ordinal);

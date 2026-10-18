@@ -1,7 +1,8 @@
 using Aprillz.MewUI;
 using Aprillz.MewUI.Controls;
+using MewUI.Themes.Islands.Drawing;
 
-namespace MewUI.Themes.Islands;
+namespace MewUI.Themes.Islands.Styles;
 
 /// <summary>
 /// The faces of a Islands check box and radio button: the indicator, then the gap, then the label.

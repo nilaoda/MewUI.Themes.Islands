@@ -1,7 +1,8 @@
 using Aprillz.MewUI;
 using Aprillz.MewUI.Controls;
+using MewUI.Themes.Islands.Theming;
 
-namespace MewUI.Themes.Islands;
+namespace MewUI.Themes.Islands.Styles;
 
 /// <summary>
 /// The surfaces and the range controls: window, group box, label, tool tip, scroll bar, slider, progress bar.

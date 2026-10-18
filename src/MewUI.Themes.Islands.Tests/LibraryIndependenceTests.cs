@@ -1,6 +1,7 @@
 using Xunit;
 using System.Text.RegularExpressions;
 using Aprillz.MewUI;
+using MewUI.Themes.Islands.Theming;
 
 namespace MewUI.Themes.Islands.Tests;
 
@@ -68,7 +69,7 @@ public class LibraryIndependenceTests
     {
         Assert.SkipWhen(LibrarySource.Root is null, "library sources are not next to the test output");
 
-        string map = LibrarySource.Read(Path.Combine("docs", "color-map.md"));
+        string map = LibrarySource.Read(Path.Combine("..", "..", "docs", "color-map.md"));
 
         // A token, a key Islands states for a control, and the deviations section: what makes the file a
         // map rather than prose.

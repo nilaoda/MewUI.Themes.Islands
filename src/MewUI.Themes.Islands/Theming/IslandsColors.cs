@@ -1,6 +1,6 @@
 using Aprillz.MewUI;
 
-namespace MewUI.Themes.Islands;
+namespace MewUI.Themes.Islands.Theming;
 
 /// <summary>
 /// The single source of truth for every Islands color used by this theme.

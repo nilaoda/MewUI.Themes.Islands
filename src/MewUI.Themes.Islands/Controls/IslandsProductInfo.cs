@@ -1,7 +1,7 @@
 using Aprillz.MewUI;
 using Aprillz.MewUI.Controls;
 
-namespace MewUI.Themes.Islands;
+namespace MewUI.Themes.Islands.Controls;
 
 /// <summary>A quiet, keyboard-accessible product identity entry for the foot of a navigation pane.</summary>
 public static class IslandsProductInfo

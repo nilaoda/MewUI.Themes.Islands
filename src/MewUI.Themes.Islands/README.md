@@ -4,8 +4,8 @@ JetBrains' [Islands](https://plugins.jetbrains.com/docs/intellij/ui-overview.htm
 [MewUI](https://github.com/aprillz/MewUI): its light and dark variants, carried over as a theme, a color
 table, a set of metrics, per-control style rules and the few shapes MewUI draws itself. The authoritative
 definition of both variants — every token, every component key — is checked in at
-[`docs/islands/`](docs/islands), and how each of them is used is in
-[`docs/color-map.md`](docs/color-map.md).
+[`docs/islands/`](https://github.com/nilaoda/MewUI.Themes.Islands/tree/main/docs/islands), and how each of them is used is in
+[`docs/color-map.md`](https://github.com/nilaoda/MewUI.Themes.Islands/blob/main/docs/color-map.md).
 
 <p align="center">
   <picture>
@@ -39,6 +39,23 @@ both to `Menlo`, which is always there. Set prose in it at your peril: a monospa
 a title set in one hands its Chinese to whatever the platform substitutes. It is for the columns that hold
 codes, ids and timestamps.
 
+## Namespaces
+
+The theme entry points and all fluent extensions live in `MewUI.Themes.Islands`.
+Import component namespaces as needed:
+
+```csharp
+using MewUI.Themes.Islands;
+using MewUI.Themes.Islands.Controls;
+using MewUI.Themes.Islands.Menus;
+using MewUI.Themes.Islands.Theming;
+using MewUI.Themes.Islands.Windowing;
+```
+
+`Drawing` contains the optional drawing helpers. `Styles` contains internal style registration.
+Reference data and the color map live in the repository's root `docs/` directory and are not included
+in the NuGet package.
+
 ## Install
 
 ```csharp
@@ -60,22 +77,22 @@ application.SetThemeMode(ThemeMode.Light);  // IntelliJ Light
 ## The colors are the point
 
 Islands resolves thousands of `UIDefaults` keys down to a few hundred colors at startup. This library does
-not approximate that algebra: every value in [`IslandsColors.cs`](IslandsColors.cs) is read verbatim out of the
+not approximate that algebra: every value in [`IslandsColors.cs`](https://github.com/nilaoda/MewUI.Themes.Islands/blob/main/src/MewUI.Themes.Islands/Theming/IslandsColors.cs) is read verbatim out of the
 upstream resolved dumps for `FlatLightLaf`, `FlatDarkLaf` and the `FlatIntelliJLaf` / `FlatDarculaLaf`
-deltas. [`IslandsVariantColors`](IslandsVariantColors.cs) gives each one a name that carries its Islands key, so a
+deltas. [`IslandsVariantColors`](https://github.com/nilaoda/MewUI.Themes.Islands/blob/main/src/MewUI.Themes.Islands/Theming/IslandsVariantColors.cs) gives each one a name that carries its Islands key, so a
 custom palette (Nord, Cobalt, a brand) is one record to fill in:
 
 ```csharp
-var nord = IslandsColors.Dark with
+var nord = IslandsPalette.Default.Dark with
 {
     Accent = Color.FromHex("#5e81ac"),
     // …
 };
 
-Application.Create().UseIslands(new IslandsOptions { Palette = new IslandsPalette(IslandsColors.Light, nord) });
+Application.Create().UseIslands(new IslandsOptions { Palette = new IslandsPalette(IslandsPalette.Default.Light, nord) });
 ```
 
-[`docs/color-map.md`](docs/color-map.md) lists which Islands key became which MewUI property, and — in
+[`docs/color-map.md`](https://github.com/nilaoda/MewUI.Themes.Islands/blob/main/docs/color-map.md) lists which Islands key became which MewUI property, and — in
 detail — which Islands behaviors a style layer cannot reach.
 
 ## Writing an interface in it

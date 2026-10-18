@@ -1,7 +1,9 @@
 using Aprillz.MewUI;
 using Aprillz.MewUI.Controls;
+using MewUI.Themes.Islands.Drawing;
+using MewUI.Themes.Islands.Theming;
 
-namespace MewUI.Themes.Islands;
+namespace MewUI.Themes.Islands.Styles;
 
 /// <summary>
 /// Text fields, spinners, check boxes, radio buttons, expanders and segmented controls.

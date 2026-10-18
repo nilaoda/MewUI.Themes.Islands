@@ -1,6 +1,6 @@
 using Aprillz.MewUI;
 
-namespace MewUI.Themes.Islands;
+namespace MewUI.Themes.Islands.Theming;
 
 /// <summary>
 /// Islands's New UI density translated into <see cref="ThemeMetrics"/>, plus the insets and radii

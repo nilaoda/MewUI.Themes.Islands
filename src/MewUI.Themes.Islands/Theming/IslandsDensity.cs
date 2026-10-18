@@ -1,6 +1,6 @@
 using Aprillz.MewUI;
 
-namespace MewUI.Themes.Islands;
+namespace MewUI.Themes.Islands.Theming;
 
 /// <summary>
 /// Islands ships two densities: the regular one and a <c>.compact</c> set of the same tokens.

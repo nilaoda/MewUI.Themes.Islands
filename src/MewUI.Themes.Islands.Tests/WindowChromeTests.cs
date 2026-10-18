@@ -1,4 +1,5 @@
 using Xunit;
+using MewUI.Themes.Islands.Windowing;
 
 namespace MewUI.Themes.Islands.Tests;
 
@@ -43,7 +44,7 @@ public class WindowChromeTests
     {
         Assert.SkipWhen(LibrarySource.Root is null, "library sources are not next to the test output");
 
-        string source = LibrarySource.Read("IslandsWindowChrome.cs");
+        string source = LibrarySource.Read("Windowing/IslandsWindowChrome.cs");
 
         // The definition, the button's action, and the strip's call.
         Assert.Equal(3, source.Split("ToggleMaximize").Length - 1);
@@ -65,7 +66,7 @@ public class WindowChromeTests
         Assert.SkipWhen(LibrarySource.Root is null, "library sources are not next to the test output");
 
         const string toggle = "private void ToggleMaximize()";
-        string source = LibrarySource.Read("IslandsWindowChrome.cs");
+        string source = LibrarySource.Read("Windowing/IslandsWindowChrome.cs");
         int start = source.IndexOf(toggle, StringComparison.Ordinal);
         Assert.True(start >= 0, "ToggleMaximize is gone");
         int end = source.IndexOf("\n    }", start, StringComparison.Ordinal);
@@ -89,7 +90,7 @@ public class WindowChromeTests
     {
         Assert.SkipWhen(LibrarySource.Root is null, "library sources are not next to the test output");
 
-        string source = LibrarySource.Read("IslandsWindowChrome.cs");
+        string source = LibrarySource.Read("Windowing/IslandsWindowChrome.cs");
 
         Assert.Contains("public void SetTitle(string title)", source, StringComparison.Ordinal);
 
@@ -106,7 +107,7 @@ public class WindowChromeTests
 
     private static string StripHandler()
     {
-        string source = LibrarySource.Read("IslandsWindowChrome.cs");
+        string source = LibrarySource.Read("Windowing/IslandsWindowChrome.cs");
         int start = source.IndexOf(Handler, StringComparison.Ordinal);
         int end = source.IndexOf("\n    }", start, StringComparison.Ordinal);
 

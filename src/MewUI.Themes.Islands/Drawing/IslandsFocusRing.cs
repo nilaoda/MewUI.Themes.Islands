@@ -2,8 +2,9 @@ using System.Runtime.CompilerServices;
 using Aprillz.MewUI;
 using Aprillz.MewUI.Controls;
 using Aprillz.MewUI.Rendering;
+using MewUI.Themes.Islands.Theming;
 
-namespace MewUI.Themes.Islands;
+namespace MewUI.Themes.Islands.Drawing;
 
 /// <summary>
 /// Islands's outer focus ring: the 2 DIP halo that <c>Component.focusWidth</c> switches on around a focused

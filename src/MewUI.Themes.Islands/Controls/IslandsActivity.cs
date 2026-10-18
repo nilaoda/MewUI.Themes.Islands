@@ -1,7 +1,7 @@
 using Aprillz.MewUI;
 using Aprillz.MewUI.Controls;
 
-namespace MewUI.Themes.Islands;
+namespace MewUI.Themes.Islands.Controls;
 
 /// <summary>Reusable activity-list and inspector layouts. All text belongs to the host.</summary>
 public static class IslandsActivity

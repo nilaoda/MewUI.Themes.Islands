@@ -1,7 +1,8 @@
 using Aprillz.MewUI;
 using Aprillz.MewUI.Controls;
+using MewUI.Themes.Islands.Theming;
 
-namespace MewUI.Themes.Islands;
+namespace MewUI.Themes.Islands.Styles;
 
 /// <summary>
 /// The surfaces an application lays out of plain borders: a panel, a card, a toolbar strip, a status bar.

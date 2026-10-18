@@ -1,8 +1,9 @@
 using Aprillz.MewUI;
 using Aprillz.MewUI.Controls;
 using Aprillz.MewUI.Rendering;
+using MewUI.Themes.Islands.Theming;
 
-namespace MewUI.Themes.Islands;
+namespace MewUI.Themes.Islands.Drawing;
 
 /// <summary>Which of the two Islands check faces this indicator draws.</summary>
 internal enum IslandsToggleShape

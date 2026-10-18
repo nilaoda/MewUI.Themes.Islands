@@ -1,7 +1,8 @@
 using Aprillz.MewUI;
 using Aprillz.MewUI.Controls;
+using MewUI.Themes.Islands.Theming;
 
-namespace MewUI.Themes.Islands;
+namespace MewUI.Themes.Islands.Controls;
 
 /// <summary>A mixed-content list with selectable rows, non-selectable headers and extended selection.</summary>
 /// <remarks>The host supplies row objects and content. Ctrl/Cmd toggles and Shift selects a visible range.</remarks>

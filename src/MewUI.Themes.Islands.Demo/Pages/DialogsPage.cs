@@ -1,6 +1,8 @@
 using Aprillz.MewUI;
 using Aprillz.MewUI.Controls;
 using MewUI.Themes.Islands;
+using MewUI.Themes.Islands.Controls;
+using MewUI.Themes.Islands.Menus;
 
 namespace MewUI.Themes.Islands.Demo.Pages;
 

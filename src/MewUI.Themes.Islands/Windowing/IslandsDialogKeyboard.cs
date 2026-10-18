@@ -3,10 +3,10 @@ using Aprillz.MewUI;
 using Aprillz.MewUI.Controls;
 using Aprillz.MewUI.Input;
 
-namespace MewUI.Themes.Islands;
+namespace MewUI.Themes.Islands.Windowing;
 
 /// <summary>Opt-in keyboard actions for dialogs.</summary>
-public static partial class IslandsDialogKeyboard
+internal static class IslandsDialogKeyboard
 {
     /// <summary>Invokes the default action on an unhandled, unmodified Enter press.</summary>
     /// <remarks>
@@ -14,8 +14,8 @@ public static partial class IslandsDialogKeyboard
     /// IME composition and repeated key presses do not invoke the action. Supply the same validation
     /// callback used by the confirmation button, and an optional predicate for its enabled state.
     /// </remarks>
-    public static TWindow IslandsDefaultAction<TWindow>(
-        this TWindow window, Action action, Func<bool>? canExecute = null) where TWindow : Window
+    internal static TWindow Attach<TWindow>(
+        TWindow window, Action action, Func<bool>? canExecute = null) where TWindow : Window
     {
         ArgumentNullException.ThrowIfNull(window);
         ArgumentNullException.ThrowIfNull(action);

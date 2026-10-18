@@ -13,11 +13,17 @@ color tables, metrics, per-control style rules, and the few shapes MewUI draws i
 
 ## Layout
 
+- `docs/` — the color map, upstream reference data and screenshots
 - `src/MewUI.Themes.Islands/` — the library
 - `src/MewUI.Themes.Islands.Tests/` — its tests
+- `src/MewUI.Themes.Islands.Demo/` — the component gallery
 
 The full documentation, including the token map and the deviation notes, is in
 [`src/MewUI.Themes.Islands/README.md`](src/MewUI.Themes.Islands/README.md).
+
+The library groups palette and metrics in `Theming/`, reusable components in `Controls/`,
+menus in `Menus/`, window behavior in `Windowing/`, style rules in `Styles/`, and drawing helpers
+in `Drawing/`. Fluent entry points live in `Extensions/` and retain the root namespace.
 
 ## Build and test
 

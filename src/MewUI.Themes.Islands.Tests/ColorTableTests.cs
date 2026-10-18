@@ -2,6 +2,7 @@ using Xunit;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using Aprillz.MewUI;
+using MewUI.Themes.Islands.Theming;
 
 namespace MewUI.Themes.Islands.Tests;
 
@@ -134,7 +135,7 @@ public class ColorTableTests
     {
         Assert.SkipWhen(LibrarySource.Root is null, "library sources are not next to the test output");
 
-        string source = LibrarySource.Read("IslandsVariantColors.cs");
+        string source = LibrarySource.Read("Theming/IslandsVariantColors.cs");
         int declared = Regex.Matches(source, @"public required Color \w+ \{ get; init; \}").Count;
 
         // required + init is what makes a custom palette that forgets a key fail to compile, and what keeps

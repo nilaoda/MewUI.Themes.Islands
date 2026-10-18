@@ -1,7 +1,7 @@
 using Aprillz.MewUI;
 using Aprillz.MewUI.Controls;
 
-namespace MewUI.Themes.Islands;
+namespace MewUI.Themes.Islands.Windowing;
 
 /// <summary>Retires hover feedback when input moves to another window.</summary>
 internal static class IslandsWindowHover

@@ -1,6 +1,6 @@
 using Aprillz.MewUI;
 
-namespace MewUI.Themes.Islands;
+namespace MewUI.Themes.Islands.Theming;
 
 /// <summary>
 /// A pair of <see cref="IslandsVariantColors"/> (light + dark) that a MewUI application installs.

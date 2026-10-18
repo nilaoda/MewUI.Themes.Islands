@@ -2,7 +2,7 @@ using Aprillz.MewUI;
 using Aprillz.MewUI.Controls;
 using Aprillz.MewUI.Rendering;
 
-namespace MewUI.Themes.Islands;
+namespace MewUI.Themes.Islands.Controls;
 
 /// <summary>Monochrome symbols for workspace actions and navigation.</summary>
 public enum IslandsIconKind

@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using Aprillz.MewUI;
 using Aprillz.MewUI.Controls;
 
-namespace MewUI.Themes.Islands;
+namespace MewUI.Themes.Islands.Windowing;
 
 /// <summary>
 /// Windows 11's Snap Layouts, offered over a window button the theme drew itself.

@@ -2,6 +2,7 @@ using Aprillz.MewUI;
 using Aprillz.MewUI.Controls;
 using Aprillz.MewUI.Input;
 using Xunit;
+using MewUI.Themes.Islands.Windowing;
 
 namespace MewUI.Themes.Islands.Tests;
 

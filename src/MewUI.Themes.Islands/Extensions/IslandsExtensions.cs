@@ -1,6 +1,9 @@
 using Aprillz.MewUI;
 using Aprillz.MewUI.Controls;
-using Ring = MewUI.Themes.Islands.IslandsFocusRing;
+using Ring = MewUI.Themes.Islands.Drawing.IslandsFocusRing;
+using MewUI.Themes.Islands.Drawing;
+using MewUI.Themes.Islands.Styles;
+using MewUI.Themes.Islands.Theming;
 
 namespace MewUI.Themes.Islands;
 
@@ -209,7 +212,7 @@ public static class IslandsExtensions
     public static T IslandsDropDownArrow<T>(this T control) where T : Control
     {
         // Named in full: the method and the class it forwards to share a name.
-        MewUI.Themes.Islands.IslandsDropDownArrow.Apply(control);
+        MewUI.Themes.Islands.Drawing.IslandsDropDownArrow.Apply(control);
         return control;
     }
 }
