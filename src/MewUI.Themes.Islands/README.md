@@ -7,6 +7,14 @@ definition of both variants — every token, every component key — is checked 
 [`docs/islands/`](docs/islands), and how each of them is used is in
 [`docs/color-map.md`](docs/color-map.md).
 
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/nilaoda/MewUI.Themes.Islands/main/docs/screenshots/overview-dark.png">
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/nilaoda/MewUI.Themes.Islands/main/docs/screenshots/overview-light.png">
+    <img alt="Islands overview" src="https://raw.githubusercontent.com/nilaoda/MewUI.Themes.Islands/main/docs/screenshots/overview-light.png" width="880">
+  </picture>
+</p>
+
 Three things are worth knowing before the rest of this file:
 
 - **Surfaces are picked by layer.** `layer-0` is the application background, `layer-1` a panel or dialog,
