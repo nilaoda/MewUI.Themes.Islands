@@ -68,6 +68,15 @@ public class StyleRuleTests
             State.On(VisualStateFlags.Checked), State.On(VisualStateFlags.Checked | VisualStateFlags.Hot),
             State.Off(VisualStateFlags.Enabled), State.On(VisualStateFlags.Invalid),
          ]),
+        (typeof(ToggleSwitch),
+         [
+            State.On(VisualStateFlags.Hot), State.On(VisualStateFlags.Focused), State.On(VisualStateFlags.Pressed),
+            State.On(VisualStateFlags.Checked), State.On(VisualStateFlags.Checked | VisualStateFlags.Hot),
+            State.On(VisualStateFlags.Checked | VisualStateFlags.Pressed),
+            State.On(VisualStateFlags.Checked | VisualStateFlags.Focused),
+            State.On(VisualStateFlags.Checked, VisualStateFlags.Enabled),
+            State.Off(VisualStateFlags.Enabled), State.On(VisualStateFlags.Invalid),
+         ]),
         (typeof(Expander), [State.On(VisualStateFlags.Focused), State.Off(VisualStateFlags.Enabled)]),
         (typeof(SegmentedControl),
          [State.On(VisualStateFlags.Hot), State.On(VisualStateFlags.Focused), State.Off(VisualStateFlags.Enabled), State.On(VisualStateFlags.Invalid)]),
@@ -129,6 +138,21 @@ public class StyleRuleTests
             Assert.Equal(control, style!.TargetType);
             Assert.NotNull(style.BasedOn);
         }
+    }
+
+    [Fact]
+    public void The_toggle_switch_is_a_fixed_islands_capsule()
+    {
+        StyleSheet sheet = Registered();
+        Style style = sheet.GetByType(typeof(ToggleSwitch))!;
+
+        AssertSetterValue(style, FrameworkElement.MinWidthProperty, IslandsSwitchIndicator.SwitchWidth);
+        AssertSetterValue(style, FrameworkElement.MinHeightProperty, IslandsSwitchIndicator.SwitchHeight);
+        AssertSetterValue(style, FrameworkElement.WidthProperty, IslandsSwitchIndicator.SwitchWidth);
+        AssertSetterValue(style, FrameworkElement.HeightProperty, IslandsSwitchIndicator.SwitchHeight);
+        AssertSetterValue(style, Control.PaddingProperty, Thickness.Zero);
+        Assert.Contains(style.Setters, setter => ReferenceEquals(setter.Property, Control.TemplateProperty));
+        Assert.Contains(style.Setters, setter => ReferenceEquals(setter.Property, ToggleSwitch.ThumbBrushProperty));
     }
 
     [Fact]

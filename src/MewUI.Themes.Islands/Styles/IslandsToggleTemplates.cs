@@ -16,6 +16,7 @@ internal static class IslandsToggleTemplates
 {
     private static DelegateControlTemplate<CheckBox>? _checkBox;
     private static DelegateControlTemplate<RadioButton>? _radioButton;
+    private static DelegateControlTemplate<ToggleSwitch>? _switch;
 
     /// <summary>The check box face, shared by every check box the style applies it to.</summary>
     internal static DelegateControlTemplate<CheckBox> CheckBoxFace =>
@@ -24,6 +25,10 @@ internal static class IslandsToggleTemplates
     /// <summary>The radio button face, shared by every radio the style applies it to.</summary>
     internal static DelegateControlTemplate<RadioButton> RadioButtonFace =>
         _radioButton ??= new DelegateControlTemplate<RadioButton>(BuildRadioButton);
+
+    /// <summary>The switch face, shared by every switch the style applies it to.</summary>
+    internal static DelegateControlTemplate<ToggleSwitch> SwitchFace =>
+        _switch ??= new DelegateControlTemplate<ToggleSwitch>(BuildSwitch);
 
     private static Element BuildCheckBox(CheckBox owner, ControlTemplateContext ctx)
     {
@@ -37,6 +42,17 @@ internal static class IslandsToggleTemplates
         IslandsToggleIndicator indicator = NewIndicator(IslandsToggleShape.Radio);
         ctx.Bind(indicator, IslandsToggleIndicator.SelectedProperty, ToggleBase.IsCheckedProperty);
         return Face(ctx, indicator);
+    }
+
+    private static Element BuildSwitch(ToggleSwitch owner, ControlTemplateContext ctx)
+    {
+        var indicator = new IslandsSwitchIndicator();
+        ctx.Bind(indicator, IslandsSwitchIndicator.CheckedProperty, ToggleBase.IsCheckedProperty);
+        ctx.Bind(indicator, IslandsSwitchIndicator.FaceProperty, Control.BackgroundProperty);
+        ctx.Bind(indicator, IslandsSwitchIndicator.EdgeProperty, Control.BorderBrushProperty);
+        ctx.Bind(indicator, IslandsSwitchIndicator.EdgeThicknessProperty, Control.BorderThicknessProperty);
+        ctx.Bind(indicator, IslandsSwitchIndicator.ThumbProperty, ToggleSwitch.ThumbBrushProperty);
+        return indicator;
     }
 
     private static IslandsToggleIndicator NewIndicator(IslandsToggleShape shape)

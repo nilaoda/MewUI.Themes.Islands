@@ -20,6 +20,7 @@ internal static class IslandsStyles
     {
         IslandsButtonStyles.Register(sheet);
         IslandsTextInputStyles.Register(sheet);
+        IslandsToggleSwitchStyles.Register(sheet);
         IslandsListStyles.Register(sheet);
         IslandsGridTreeStyles.Register(sheet);
         IslandsMenuStyles.Register(sheet);

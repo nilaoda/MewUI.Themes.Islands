@@ -29,7 +29,7 @@ internal static class ControlsPage
         var check = new CheckBox().Content("Enable animations").IsChecked(true);
         var radioA = new RadioButton().Content("Light").GroupName("theme").IsChecked(true);
         var radioB = new RadioButton().Content("Dark").GroupName("theme");
-        var toggle = new ToggleSwitch().IsChecked(true);
+        var toggle = new ToggleSwitch().IsChecked(true).HorizontalAlignment(HorizontalAlignment.Left);
 
         var slider = new Slider().Minimum(0).Maximum(100).Value(64).Width(260);
         var progress = new ProgressBar().Minimum(0).Maximum(100).Value(68).Width(260);
