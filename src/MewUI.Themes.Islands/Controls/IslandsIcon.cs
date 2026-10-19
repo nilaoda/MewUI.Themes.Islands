@@ -21,6 +21,11 @@ public enum IslandsIconKind
     Library,
     ChevronDown,
     ChevronUp,
+    Search,
+    Filter,
+    Sort,
+    Layers,
+    ArrowLeft,
 }
 
 /// <summary>Theme-aware vector icons, independent of platform fonts.</summary>
@@ -63,6 +68,12 @@ public static class IslandsIcon
         private static readonly PathGeometry ChevronDown = PathGeometry.Parse("M4 6 L8 10 L12 6");
         private static readonly PathGeometry ChevronUp = PathGeometry.Parse("M4 10 L8 6 L12 10");
 
+        private static readonly PathGeometry Search = PathGeometry.Parse("M10.5 10.5 L14 14 M11.5 7 A4.5 4.5 0 1 1 2.5 7 A4.5 4.5 0 1 1 11.5 7");
+        private static readonly PathGeometry Filter = PathGeometry.Parse("M2 3 H14 L9.5 8 V13 L6.5 11.5 V8 Z");
+        private static readonly PathGeometry Sort = PathGeometry.Parse("M4 2 V13 M1.5 10.5 L4 13 L6.5 10.5 M8 3 H14 M8 6.5 H12.5 M8 10 H11");
+        private static readonly PathGeometry Layers = PathGeometry.Parse("M8 2 L14 5.5 L8 9 L2 5.5 Z M2 8.5 L8 12 L14 8.5 M2 11.5 L8 15 L14 11.5");
+        private static readonly PathGeometry ArrowLeft = PathGeometry.Parse("M13 8 H4 M7.5 4.5 L4 8 L7.5 11.5");
+
         protected override Size MeasureContent(Size availableSize) => new(16, 16);
 
         protected override void OnRender(IGraphicsContext context)
@@ -91,6 +102,11 @@ public static class IslandsIcon
                 IslandsIconKind.Library => Library,
                 IslandsIconKind.ChevronDown => ChevronDown,
                 IslandsIconKind.ChevronUp => ChevronUp,
+                IslandsIconKind.Search => Search,
+                IslandsIconKind.Filter => Filter,
+                IslandsIconKind.Sort => Sort,
+                IslandsIconKind.Layers => Layers,
+                IslandsIconKind.ArrowLeft => ArrowLeft,
                 _ => Export,
             };
 

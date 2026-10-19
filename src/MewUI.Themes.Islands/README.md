@@ -10,7 +10,8 @@ and reusable workspace, menu and window components.
 
 ## Preview status and compatibility
 
-Version `0.1.0-preview.1` is the first preview. Public APIs may change between preview releases.
+Version `0.1.0-preview.2` adds responsive search fields, toolbars and search/filter/sort/version icons.
+Public APIs may change between preview releases.
 It is built and tested against MewUI `0.22.1`; later MewUI versions need separate verification,
 especially for window integration and dialog keyboard routing.
 
@@ -27,7 +28,7 @@ In a MewUI application:
 
 ```sh
 dotnet add package Aprillz.MewUI --version 0.22.1
-dotnet add package MewUI.Themes.Islands --version 0.1.0-preview.1
+dotnet add package MewUI.Themes.Islands --version 0.1.0-preview.2
 ```
 
 If the application already uses MewUI's individual platform/backend packages, keep that setup
@@ -155,6 +156,7 @@ new Border().IslandsCard().Child(
 | `IslandsLink`, `IslandsErrorText`, `IslandsMonospace` | Specialized text |
 | `IslandsTabs`, `IslandsFocusRing`, `IslandsDropDownArrow`, `IslandsCellMargins` | Additional control styling |
 | `IslandsWorkspace`, `IslandsToolbar` | Split workspace, tool rail and pane headers |
+| `IslandsSearchField`, `IslandsSearchToolbar` | Search icon, optional inline scope control and responsive toolbar layout |
 | `IslandsRowList` | Headers mixed with selectable rows, keyboard navigation and selection restoration |
 | `IslandsActivity`, `IslandsProductInfo`, `IslandsIcon` | Reusable presentation components |
 | `IslandsContextMenu`, `IslandsMenuItem` | Menus hosted in the owner window's overlay |
@@ -162,6 +164,27 @@ new Border().IslandsCard().Child(
 The host supplies application data, labels, commands and persistence. `IslandsWorkspace.Panes`
 exposes the splitter for host-owned position persistence. `IslandsRowList` is intended for moderate
 mixed-content lists; use MewUI's virtualized `GridView` for large flat datasets.
+
+### Search and toolbar composition
+
+`IslandsSearchField` wraps a standard `TextBox` with a decorative search icon and an optional
+scope control inside its outline. The caller supplies bindings, localization and search behavior.
+`IslandsSearchToolbar` places the field beside its actions when they fit, or above them otherwise.
+Use a `WrapPanel` for actions that should also wrap in narrow panes.
+
+```csharp
+var input = new TextBox().Placeholder("Search records");
+var filterLabel = new TextBlock().Text("Filter");
+var filter = IslandsToolbar.MenuButton(IslandsIconKind.Filter, filterLabel);
+var actions = new WrapPanel { Spacing = 4 };
+actions.Add(filter);
+var toolbar = new IslandsSearchToolbar(new IslandsSearchField(input), actions);
+
+// Update the label without replacing the icon and chevron.
+filterLabel.Text = "Filter · 1";
+```
+
+`IslandsIconKind` also includes `Search`, `Sort`, `Layers` and `ArrowLeft` for workspace navigation.
 
 ## Window and dialog integration
 

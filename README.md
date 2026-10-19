@@ -19,7 +19,8 @@ and reusable workspace, menu and window components.
 
 ## Preview status
 
-The first preview is `0.1.0-preview.1`. Public APIs may change between preview releases.
+The current source version is `0.1.0-preview.2`, adding responsive search fields, toolbars and icons.
+See the NuGet badge above for the latest published version. Public APIs may change between preview releases.
 The current dependency and integration baseline is MewUI `0.22.1`.
 
 The library targets `net8.0` and `net10.0`, matching both `Aprillz.MewUI.Core` and

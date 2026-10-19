@@ -25,7 +25,7 @@
     <PackageLicenseExpression>MIT AND Apache-2.0</PackageLicenseExpression>
     <PackageTags>mewui;theme;islands;desktop;nativeaot</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageReleaseNotes>First preview. Includes light and dark palettes, two densities, control styles, workspace components, menus, and window chrome. Built and tested with MewUI 0.22.1; public APIs may change between preview releases.</PackageReleaseNotes>
+    <PackageReleaseNotes>Adds responsive search toolbars, integrated search fields, stable icon-and-label menu triggers, and search/filter/sort/layers/navigation icons. Built and tested with MewUI 0.22.1; public APIs may change between preview releases.</PackageReleaseNotes>
     <PackageProjectUrl>https://github.com/nilaoda/MewUI.Themes.Islands</PackageProjectUrl>
     <RepositoryUrl>https://github.com/nilaoda/MewUI.Themes.Islands.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>

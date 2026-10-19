@@ -32,6 +32,13 @@ public static class IslandsToolbar
             IslandsIcon.Create(icon).CenterVertical(), new TextBlock().Text(text).CenterVertical()))
             .IslandsToolbarButton().MinWidth(0).Padding(7, 4);
 
+    /// <summary>A flat menu trigger whose label can change without replacing its icons.</summary>
+    public static Button MenuButton(IslandsIconKind icon, TextBlock label) =>
+        new Button().Content(new StackPanel().Horizontal().Spacing(5).Children(
+            IslandsIcon.Create(icon).CenterVertical(), label.CenterVertical(),
+            IslandsIcon.Create(IslandsIconKind.ChevronDown).Width(12).Height(12).CenterVertical()))
+            .IslandsToolbarButton().MinWidth(0).Padding(6, 4);
+
     /// <summary>A primary action whose icon shares the text's contrast over the accent.</summary>
     public static Button PrimaryActionButton(IslandsIconKind icon, string text) =>
         new Button().Content(new StackPanel().Horizontal().Spacing(6).Children(
