@@ -23,8 +23,8 @@ public static class IslandsBuilderExtensions
     /// </para>
     /// <para>
     /// MewUI's <c>OnStartup</c> replaces any previously registered startup callback rather than
-    /// composing them. If the application needs its own startup work, call
-    /// <see cref="IslandsTheme.Install"/> from inside that callback instead of using this extension.
+    /// composing them. If the application needs its own startup work, register that callback after
+    /// this call, and invoke <see cref="IslandsTheme.Install"/> with the same options inside it.
     /// </para>
     /// </remarks>
     public static ApplicationBuilder UseIslands(this ApplicationBuilder builder, IslandsOptions? options = null)

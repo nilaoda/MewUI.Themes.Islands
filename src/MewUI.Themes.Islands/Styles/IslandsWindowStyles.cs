@@ -29,9 +29,9 @@ internal static class IslandsWindowStyles
     /// body text enter the tree.
     /// </summary>
     /// <remarks>
-    /// The foreground is stated rather than inherited from the seed: IntelliJ back-solves its seed text color
-    /// to <c>#232323</c> to keep MewUI's derived border near Islands's <c>#c2c2c2</c>, and <c>#000000</c> is
-    /// what Islands actually paints. The padding is MewUI's container inset, where Islands leaves a root panel
+    /// The foreground uses the explicit theme text color rather than the palette seed. The light variant's
+    /// seed text is <c>#3c3c3c</c> to balance derived borders and row labels, while its body text is
+    /// <c>#000000</c>. The padding is MewUI's container inset, where Islands leaves a root panel
     /// flush against the frame and lets each panel carry its own gaps.
     /// </remarks>
     private static Style WindowStyle() =>

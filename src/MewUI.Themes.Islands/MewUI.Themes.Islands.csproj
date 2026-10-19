@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <!-- Match Aprillz.MewUI.Core's TFM surface (it ships assets for both lib/net8.0 and lib/net10.0). -->
+    <!-- Match the net8.0 and net10.0 assets shipped by Aprillz.MewUI.Core 0.22.1. -->
     <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
     <RootNamespace>MewUI.Themes.Islands</RootNamespace>
     <AssemblyName>MewUI.Themes.Islands</AssemblyName>
@@ -21,11 +21,11 @@
     <IsPackable>true</IsPackable>
     <PackageId>MewUI.Themes.Islands</PackageId>
     <Authors>nilaoda</Authors>
-    <Description>Islands theme for MewUI: JetBrains’ New UI color tables and metrics, dark and light, as per-control style rules plus semantic extension methods.</Description>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageTags>mewui;theme;expui;newui;jetbrains;nativeaot</PackageTags>
+    <Description>Independent Islands-inspired theme for MewUI, with light and dark palettes, regular and compact density, control styles, and reusable workspace and window components.</Description>
+    <PackageLicenseExpression>MIT AND Apache-2.0</PackageLicenseExpression>
+    <PackageTags>mewui;theme;islands;desktop;nativeaot</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageReleaseNotes>Initial release: Islands dark and light colors, metrics and styles.</PackageReleaseNotes>
+    <PackageReleaseNotes>First preview. Includes light and dark palettes, two densities, control styles, workspace components, menus, and window chrome. Built and tested with MewUI 0.22.1; public APIs may change between preview releases.</PackageReleaseNotes>
     <PackageProjectUrl>https://github.com/nilaoda/MewUI.Themes.Islands</PackageProjectUrl>
     <RepositoryUrl>https://github.com/nilaoda/MewUI.Themes.Islands.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -52,6 +52,8 @@
   <ItemGroup>
     <None Include="README.md" Pack="true" PackagePath="/" Visible="false" />
     <None Include="../../LICENSE" Pack="true" PackagePath="/" Visible="false" />
+    <None Include="../../THIRD-PARTY-NOTICES.md" Pack="true" PackagePath="/" Visible="false" />
+    <None Include="../../licenses/Apache-2.0.txt" Pack="true" PackagePath="licenses/" Visible="false" />
   </ItemGroup>
 
 </Project>

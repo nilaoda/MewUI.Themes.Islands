@@ -11,7 +11,7 @@ namespace MewUI.Themes.Islands.Theming;
 /// (<c>ManyIslandsLight</c> / <c>ManyIslandsDark</c>). Islands is a token design: the gray, blue, red, green
 /// and yellow ramps are the same in both variants and only the semantic tokens — <c>layer-0/1/2-bg</c>,
 /// <c>text-*</c>, <c>core-bg-transparent-*</c> — resolve per variant. Each field names the token it comes
-/// from, and every hex appears exactly once per variant.
+/// from; multiple roles can share the same resolved color.
 /// </para>
 /// <para>
 /// Two things follow from that design. First, a surface is picked by layer rather than by component: the

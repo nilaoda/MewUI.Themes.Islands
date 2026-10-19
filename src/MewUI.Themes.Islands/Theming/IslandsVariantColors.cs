@@ -4,8 +4,8 @@ namespace MewUI.Themes.Islands.Theming;
 
 /// <summary>
 /// One variant (light or dark) of the Islands color table.
-/// Every field maps 1:1 to a Islands <c>UIDefaults</c> key, resolved against the upstream
-/// <c>FlatIntelliJLaf</c> / <c>FlatDarculaLaf</c> property dumps.
+/// Color roles used by the MewUI theme, mapped from the checked-in Islands reference JSON files.
+/// Fields also include documented MewUI-specific values and platform caption colors.
 /// </summary>
 /// <remarks>
 /// The record is <c>required</c>-initialized on purpose: a variant that forgets a color does not
@@ -125,10 +125,10 @@ public sealed record IslandsVariantColors
     public required Color Accent { get; init; }
 
     /// <summary>
-    /// The text color fed to <see cref="ThemeSeed.WindowText"/>. Usually <see cref="Text"/>, except for
-    /// IntelliJ Light where it is back-solved to <c>#232323</c>, which keeps MewUI's derived
-    /// <c>ControlBorder</c> four steps from Islands's <c>#c2c2c2</c> instead of eleven (see
-    /// <c>docs/color-map.md</c>).
+    /// The text color fed to <see cref="ThemeSeed.WindowText"/>. It may differ from <see cref="Text"/>
+    /// to balance MewUI's derived borders and row-label contrast. The default light variant uses
+    /// <c>#3c3c3c</c>; control styles apply the explicit body-text color separately.
+    /// See <c>docs/color-map.md</c> for accepted differences.
     /// </summary>
     public required Color SeedWindowText { get; init; }
 
@@ -196,7 +196,7 @@ public sealed record IslandsVariantColors
     /// <summary><c>Button.toolbar.selectedBackground</c> / <c>ToggleButton.toolbar.selectedBackground</c>.</summary>
     public required Color ToolbarSelected { get; init; }
 
-    /// <summary><c>Button.default.background</c>: IntelliJ paints the default button solid blue.</summary>
+    /// <summary><c>Button.default.background</c>: the default button background.</summary>
     public required Color PrimaryButtonBackground { get; init; }
 
     /// <summary><c>Button.default.foreground</c>.</summary>
@@ -278,7 +278,7 @@ public sealed record IslandsVariantColors
     /// <summary><c>ProgressBar.background</c>.</summary>
     public required Color ProgressTrack { get; init; }
 
-    /// <summary><c>ProgressBar.foreground</c>: the painted amount of the bar. Darcula abandons the accent here.</summary>
+    /// <summary><c>ProgressBar.foreground</c>: the filled portion of the progress bar.</summary>
     public required Color ProgressFill { get; init; }
 
     /// <summary><c>ProgressBar.selectionBackground</c>: the label drawn over the unfilled track.</summary>

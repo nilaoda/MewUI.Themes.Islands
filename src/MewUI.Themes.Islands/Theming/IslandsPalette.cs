@@ -20,7 +20,7 @@ public sealed class IslandsPalette
         Dark = dark;
     }
 
-    /// <summary>The light variant (<c>TabbedPane.tabType = underlined</c>, IntelliJ default button).</summary>
+    /// <summary>The Islands Light variant.</summary>
     public IslandsVariantColors Light { get; }
 
     /// <summary>The dark variant.</summary>

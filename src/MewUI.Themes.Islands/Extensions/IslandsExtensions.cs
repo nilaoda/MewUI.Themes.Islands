@@ -143,7 +143,7 @@ public static class IslandsExtensions
     public static TextBlock IslandsTitle(this TextBlock text) =>
         text.FontSize(ThemeFontSize.ExtraLarge);
 
-    /// <summary>A heading over a group of fields: IntelliJ writes it in a bold body, not a larger body.</summary>
+    /// <summary>A heading over a group of fields: Islands uses it in a bold body, not a larger body.</summary>
     public static TextBlock IslandsSectionTitle(this TextBlock text) =>
         text.FontWeight(FontWeight.Bold);
 

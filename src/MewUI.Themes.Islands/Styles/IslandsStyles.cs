@@ -68,7 +68,7 @@ internal static class IslandsStyles
     /// <remarks>
     /// Islands states hover and press as overlays so they tint whatever is behind them. MewUI animates a
     /// color change with a straight RGBA interpolation (<c>Color.Lerp</c>), so ramping an <em>opaque</em> face
-    /// into a translucent overlay passes through a half-transparent mid-tone: on IntelliJ Light a white button
+    /// into a translucent overlay passes through a half-transparent mid-tone: on Islands Light a white button
     /// dips to about <c>#c5c5c5</c> on its way into hover and back, which reads as a flicker at the framework's
     /// 200 ms. Compositing the overlay onto the face first leaves both ends of the ramp opaque, so the change
     /// stays monotone — and since the face is what the overlay would have landed on, the settled fill is

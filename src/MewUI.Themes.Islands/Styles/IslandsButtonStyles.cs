@@ -192,7 +192,7 @@ internal static class IslandsButtonStyles
             ]);
 
     /// <summary>
-    /// IntelliJ's default button: a solid blue face, a darker edge, white bold text. Shadowing the
+    /// Islands' default button: a solid blue face, a darker edge, white bold text. Shadowing the
     /// framework's accent key is what makes <c>.IslandsPrimaryButton()</c> and every accent-styled button the
     /// framework builds for itself read as Islands.
     /// </summary>

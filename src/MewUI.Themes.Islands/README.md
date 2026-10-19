@@ -1,190 +1,201 @@
 # MewUI.Themes.Islands
 
-JetBrains' [Islands](https://plugins.jetbrains.com/docs/intellij/ui-overview.html) look for
-[MewUI](https://github.com/aprillz/MewUI): its light and dark variants, carried over as a theme, a color
-table, a set of metrics, per-control style rules and the few shapes MewUI draws itself. The authoritative
-definition of both variants — every token, every component key — is checked in at
-[`docs/islands/`](https://github.com/nilaoda/MewUI.Themes.Islands/tree/main/docs/islands), and how each of them is used is in
-[`docs/color-map.md`](https://github.com/nilaoda/MewUI.Themes.Islands/blob/main/docs/color-map.md).
+An independent Islands-inspired theme for [MewUI](https://github.com/aprillz/MewUI),
+with light and dark palettes, regular and compact density, per-control styles,
+and reusable workspace, menu and window components.
 
 <p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/nilaoda/MewUI.Themes.Islands/main/docs/screenshots/overview-dark.png">
-    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/nilaoda/MewUI.Themes.Islands/main/docs/screenshots/overview-light.png">
-    <img alt="Islands overview" src="https://raw.githubusercontent.com/nilaoda/MewUI.Themes.Islands/main/docs/screenshots/overview-light.png" width="880">
-  </picture>
+  <img alt="Islands theme overview" src="https://raw.githubusercontent.com/nilaoda/MewUI.Themes.Islands/main/docs/screenshots/overview-light.png" width="880">
 </p>
 
-Three things are worth knowing before the rest of this file:
+## Preview status and compatibility
 
-- **Surfaces are picked by layer.** `layer-0` is the application background, `layer-1` a panel or dialog,
-  `layer-2` content. `Border.IslandsSection()` is the signature *island* itself: a layer-1 panel with
-  Islands' 20 DIP corner and Islands' 6 DIP border, which is painted in the colour of the surface behind it
-  and therefore reads as air. Two islands side by side come out twelve apart, and an island against a window
-  edge keeps the same margin, without the application arranging either.
-- **Hover and press are translucent overlays**, not colors of their own, so they composite over whatever
-  surface they land on.
-- **There are two densities.** `IslandsDensity.Regular` carries the themes' own numbers (28 DIP controls,
-  8 DIP arcs, 24 DIP rows); `IslandsDensity.Compact` carries their `.compact` keys (24, 6, 22). Pass one
-  through `IslandsOptions.Density`.
+Version `0.1.0-preview.1` is the first preview. Public APIs may change between preview releases.
+It is built and tested against MewUI `0.22.1`; later MewUI versions need separate verification,
+especially for window integration and dialog keyboard routing.
 
-The library is standalone. It references only `Aprillz.MewUI.Core` — never a platform backend, never an
-application — so it can be packed, published and consumed on its own.
+The package targets **`net8.0` and `net10.0`**, matching the assets in
+`Aprillz.MewUI.Core` and `Aprillz.MewUI` 0.22.1. It depends only on `Aprillz.MewUI.Core`.
+The host application selects its platform and rendering backend.
 
-`IslandsDensity.MonospaceFontFamily` is a **list**, not a name:
-`Cascadia Mono, Consolas, Menlo, Monaco, Courier New`. MewUI draws with the first family installed and takes
-the characters it lacks from the ones after it, so one value covers every platform — Windows resolves
-`Cascadia Mono` where the Terminal has installed it and `Consolas` everywhere else, and macOS falls through
-both to `Menlo`, which is always there. Set prose in it at your peril: a monospaced family carries no CJK, so
-a title set in one hands its Chinese to whatever the platform substitutes. It is for the columns that hold
-codes, ids and timestamps.
-
-## Namespaces
-
-The theme entry points and all fluent extensions live in `MewUI.Themes.Islands`.
-Import component namespaces as needed:
-
-```csharp
-using MewUI.Themes.Islands;
-using MewUI.Themes.Islands.Controls;
-using MewUI.Themes.Islands.Menus;
-using MewUI.Themes.Islands.Theming;
-using MewUI.Themes.Islands.Windowing;
-```
-
-`Drawing` contains the optional drawing helpers. `Styles` contains internal style registration.
-Reference data and the color map live in the repository's root `docs/` directory and are not included
-in the NuGet package.
+Building the repository requires the .NET 10 SDK configured in `src/global.json`.
+The demo and automated tests target .NET 10; .NET 8 is also a supported library target.
 
 ## Install
 
+In a MewUI application:
+
+```sh
+dotnet add package Aprillz.MewUI --version 0.22.1
+dotnet add package MewUI.Themes.Islands --version 0.1.0-preview.1
+```
+
+If the application already uses MewUI's individual platform/backend packages, keep that setup
+and add only the theme package. The theme does not choose a backend or include one itself.
+
+## Quick start
+
+This complete macOS example uses MewUI's macOS platform and Metal renderer:
+
 ```csharp
-Application.Create()
-    .UseIslands()          // before BuildMainWindow(): the style sheet freezes on first use
+using Aprillz.MewUI;
+using Aprillz.MewUI.Controls;
+using MewUI.Themes.Islands;
+
+internal static class Program
+{
+    [STAThread]
+    private static void Main()
+    {
+        Application.Create()
+            .UseMacOS()
+            .UseMewVGMetal()
+            .UseIslands()
+            .BuildMainWindow(() => new Window()
+                .Title("Islands preview")
+                .Resizable(640, 420)
+                .Content(new StackPanel().Vertical().Spacing(12).Children(
+                    new TextBlock().Text("Hello Islands").IslandsTitle(),
+                    new Button().Content("Close").IslandsPrimaryButton()
+                        .OnClick(Application.Shutdown))))
+            .Run();
+    }
+}
+```
+
+For Windows, replace `.UseMacOS().UseMewVGMetal()` with `.UseWin32().UseDirect2D()`.
+For Linux/X11, use `.UseX11().UseMewVGX11()`. These are backend registration examples;
+see the [demo startup](https://github.com/nilaoda/MewUI.Themes.Islands/blob/main/src/MewUI.Themes.Islands.Demo/Program.cs)
+for platform selection that keeps backend registration in separate methods for trimming.
+
+Call `UseIslands()` before the first window is built. Switch the active variant with:
+
+```csharp
+application.SetThemeMode(ThemeMode.Dark);   // Islands Dark
+application.SetThemeMode(ThemeMode.Light);  // Islands Light
+```
+
+### Custom startup callbacks
+
+In MewUI 0.22.1, `OnStartup` replaces the previous callback. If your application needs one,
+install the theme inside that callback, before constructing windows or resolving styles:
+
+```csharp
+builder
+    .UseIslands(options)
+    .OnStartup(() =>
+    {
+        IslandsTheme.Install(options);
+        // Additional application startup work.
+    })
     .BuildMainWindow(() => new MainWindow())
     .Run();
 ```
 
-`UseIslands()` seeds both variants, installs the metrics, registers every style rule into the application
-style sheet, and keeps `Application.Accent` pointed at the accent of whichever variant is active. Switching
-theme mode repaints everything, including the accent:
+Use the same `IslandsOptions` instance for both calls. `UseIslands` configures palette seeds
+and metrics; `Install` registers the styles and accent synchronization after the application starts.
+
+## Namespaces
 
 ```csharp
-application.SetThemeMode(ThemeMode.Dark);   // Darcula
-application.SetThemeMode(ThemeMode.Light);  // IntelliJ Light
+using MewUI.Themes.Islands;           // Theme entry points, options and all fluent extensions
+using MewUI.Themes.Islands.Controls;  // Workspace, toolbar, row list, activity and icons
+using MewUI.Themes.Islands.Menus;     // Context menus and menu items
+using MewUI.Themes.Islands.Theming;   // Palettes, color tables, density and metrics
+using MewUI.Themes.Islands.Windowing; // Window chrome
 ```
 
-## The colors are the point
+`Drawing` contains optional drawing helpers. `Styles` contains internal style registration.
 
-Islands resolves thousands of `UIDefaults` keys down to a few hundred colors at startup. This library does
-not approximate that algebra: every value in [`IslandsColors.cs`](https://github.com/nilaoda/MewUI.Themes.Islands/blob/main/src/MewUI.Themes.Islands/Theming/IslandsColors.cs) is read verbatim out of the
-upstream resolved dumps for `FlatLightLaf`, `FlatDarkLaf` and the `FlatIntelliJLaf` / `FlatDarculaLaf`
-deltas. [`IslandsVariantColors`](https://github.com/nilaoda/MewUI.Themes.Islands/blob/main/src/MewUI.Themes.Islands/Theming/IslandsVariantColors.cs) gives each one a name that carries its Islands key, so a
-custom palette (Nord, Cobalt, a brand) is one record to fill in:
+## Palettes and density
+
+The default palettes use the checked-in `ManyIslandsLight.theme.json` and
+`ManyIslandsDark.theme.json` reference files. Colors are mapped to MewUI styles and palette seeds;
+this is an adaptation, not a complete implementation of the JetBrains UI toolkit.
+The [color map](https://github.com/nilaoda/MewUI.Themes.Islands/blob/main/docs/color-map.md)
+documents mappings and known differences.
 
 ```csharp
-var nord = IslandsPalette.Default.Dark with
+var palette = IslandsPalette.Default;
+var customDark = palette.Dark with { Accent = Color.FromHex("#5e81ac") };
+var options = new IslandsOptions
 {
-    Accent = Color.FromHex("#5e81ac"),
-    // …
+    Density = IslandsDensity.Compact,
+    Palette = new IslandsPalette(palette.Light, customDark),
 };
 
-Application.Create().UseIslands(new IslandsOptions { Palette = new IslandsPalette(IslandsPalette.Default.Light, nord) });
+builder.UseIslands(options);
 ```
 
-[`docs/color-map.md`](https://github.com/nilaoda/MewUI.Themes.Islands/blob/main/docs/color-map.md) lists which Islands key became which MewUI property, and — in
-detail — which Islands behaviors a style layer cannot reach.
+`IslandsDensity.Regular` uses 28 DIP controls and 24 DIP list/tree rows;
+`Compact` uses 24 DIP controls and 22 DIP rows. All sizes are device-independent.
+By default the accent follows the active palette variant; set `SyncAccentWithVariant = false`
+to manage it yourself.
 
-## Writing an interface in it
+`IslandsMonospace()` uses a cross-platform font fallback list for code-like values.
+It is intended for identifiers, timestamps and code, rather than general interface text.
 
-Most controls need nothing: a `Button`, `TextBox`, `ListBox`, `GridView`, `TreeView`, `TabControl`,
-`ContextMenu` or `Slider` is Islands the moment the theme is installed, because the theme registers a type
-rule for each of them. What is left is the vocabulary that a rule cannot express:
+## Controls and fluent styling
+
+Installing the theme registers styles for MewUI controls. Extensions select semantic roles:
 
 ```csharp
 new Border().IslandsCard().Child(
-    new StackPanel()
-        .Vertical()
-        .Spacing(6)
-        .Children(
-            new TextBlock().Text("Create project").IslandsTitle(),
-            new TextBlock().Text("Everything is saved locally.").IslandsHint(),
-            new Separator(),
-            new Button().Content("Run").IslandsPrimaryButton()));
+    new StackPanel().Vertical().Spacing(8).Children(
+        new TextBlock().Text("Create project").IslandsTitle(),
+        new TextBlock().Text("Choose a folder to continue.").IslandsHint(),
+        new Button().Content("Continue").IslandsPrimaryButton()));
 ```
 
-| Method | Meaning |
+| API | Purpose |
 | --- | --- |
-| `.IslandsButton()` | borderless — the chrome of a tool strip or a tab scroller |
-| `.IslandsCompactButton()` | button colors, toolbar insets, no minimum width |
-| `.IslandsPrimaryButton()` | the primary button appearance, solid in the accent |
-| `.IslandsToolbarButton()`, `.IslandsToolbarToggleButton()` | an entry of a `ToolBar` |
-| `.IslandsPanel()` | the plain panel surface, no edge |
-| `.IslandsCard()` | component surface, edged and rounded like a text field |
-| `.IslandsToolbarSurface()`, `.IslandsStatusBar()` | the strip surfaces, on the panel |
-| `.IslandsDialogFooter()` | the bottom action strip of a dialog, with one inset and one hairline everywhere |
-| `.IslandsTitle()`, `.IslandsSectionTitle()`, `.IslandsFieldLabel()`, `.IslandsHint()` | the type scale |
-| `.IslandsMonospace()` | a column of identifiers, set in the theme's cross-platform monospaced stack |
-| `.IslandsLink()`, `.IslandsErrorText()` | accent-colored navigation, validation red |
-| `.IslandsTabs()` | claim the selected tab with Islands's chip — a filled, edged rounded plate |
-| `.IslandsFocusRing()` | the outer 2 DIP focus halo of `Component.focusWidth` |
+| `IslandsPanel`, `IslandsSection`, `IslandsContent`, `IslandsCard` | Surface hierarchy |
+| `IslandsPrimaryButton`, `IslandsToolbarButton`, `IslandsCompactButton` | Button roles |
+| `IslandsTitle`, `IslandsSectionTitle`, `IslandsFieldLabel`, `IslandsHint` | Text roles |
+| `IslandsLink`, `IslandsErrorText`, `IslandsMonospace` | Specialized text |
+| `IslandsTabs`, `IslandsFocusRing`, `IslandsDropDownArrow`, `IslandsCellMargins` | Additional control styling |
+| `IslandsWorkspace`, `IslandsToolbar` | Split workspace, tool rail and pane headers |
+| `IslandsRowList` | Headers mixed with selectable rows, keyboard navigation and selection restoration |
+| `IslandsActivity`, `IslandsProductInfo`, `IslandsIcon` | Reusable presentation components |
+| `IslandsContextMenu`, `IslandsMenuItem` | Menus hosted in the owner window's overlay |
 
-## Workspace components
+The host supplies application data, labels, commands and persistence. `IslandsWorkspace.Panes`
+exposes the splitter for host-owned position persistence. `IslandsRowList` is intended for moderate
+mixed-content lists; use MewUI's virtualized `GridView` for large flat datasets.
 
-The package also supplies the parts of an Islands workspace that do not belong to an application:
+## Window and dialog integration
 
-```csharp
-var workspace = new IslandsWorkspace(
-    navigation: navigationIsland,
-    content: contentIsland,
-    toolRail: IslandsToolbar.Rail(topTools, bottomTools),
-    navigationWidth: 224);
+`window.IslandsFramelessChrome()` returns a chrome object whose `TitleBar(title, actions)` builds
+a draggable title strip. Titles default to centered alignment. macOS keeps native traffic-light
+buttons; Windows uses custom caption buttons with maximize/snap integration.
 
-var header = IslandsToolbar.Header(context, actions);
-var copy = IslandsToolbar.IconButton(IslandsIconKind.Copy, localizedCopyLabel);
-var create = IslandsToolbar.PrimaryActionButton(IslandsIconKind.Plus, localizedCreateLabel);
-```
+`window.IslandsDialogChrome()` disables minimize and maximize before showing a modal dialog.
+Closing remains available, and resizing follows the window's size settings.
 
-`IslandsWorkspace.Element` contains a draggable `SplitPanel`; `Panes` exposes its position for host-owned
-persistence. Sizes are device-independent and the layout uses the same MewUI controls on Windows, macOS
-and Linux. The tool rail has independent top and bottom groups. Pane headers keep flexible context beside
-content-sized actions. The host supplies every label, tooltip, command and pane.
+`window.IslandsDefaultAction(Confirm, () => confirmButton.IsEffectivelyEnabled)` opts into Enter
+confirmation, including macOS keypad Enter. Handled events, modifier chords, repeated key presses
+and active IME composition are ignored. Focused buttons and multiline editors retain their own
+Enter behavior. `IslandsPrimaryButton()` changes appearance only.
 
-`IslandsRowList` mixes non-selectable headers with selectable row objects. It supports Ctrl/Cmd toggles,
-Shift ranges, arrow/Home/End navigation, context-menu requests and selection restoration through `SelectMany`.
-Pass `allowMultipleSelection: false` for an activity browser with one current item. `Items` and
-`SelectedItems` are returned in display order; `Clear` clears both rows and selection. Use it for moderate
-mixed-content lists; for large flat datasets use MewUI's virtualized `GridView` instead. Row objects must be
-unique within the list. Row selection and hover colors follow theme changes without host rebuilding.
+## Validation scope
 
-`IslandsActivity.Row` places a summary beside a small timestamp and a shared vector icon.
-`IslandsActivity.Property` aligns an inspector label with host-supplied value content, including wrapped
-text or a before/after comparison. These layouts contain no activity model, field names or application logic.
+- Both target-framework assets are built and checked through an independent NuGet consumer.
+- Automated tests run on .NET 10 and cover palettes, style rules, components and window/input helpers.
+- Windows and macOS integration have been exercised in a consuming application. Linux/X11 has not
+  yet received the same manual validation.
+- `IsAotCompatible` enables trimming and AOT analyzers. It is not a guarantee for every platform/RID;
+  validate the host application's NativeAOT publish and runtime behavior on each intended target.
 
-`IslandsToolbar.DisclosureButton` supplies the header action for host-owned collapsible groups. The host
-owns expanded state and which rows are displayed. `IslandsIcon` contains shared monochrome geometry used
-by toolbars and menus; primary actions use the contrasting icon color over the accent.
+Reference data and the demo are not included in the NuGet package.
 
-`IslandsWindowChrome.TitleBar(title, actions)` centers the title on the window independently of trailing
-actions. Symmetric title insets preserve that position with native or self-drawn caption buttons. On
-Windows, caption buttons retain their full height and right edge, including maximize/snap layout behavior.
-The explicit `HorizontalAlignment.Left` overload remains available for workspaces that need it; on macOS,
-its heading starts after the native traffic lights.
+## References and license
 
-Use `window.IslandsDialogChrome()` for modal windows. It disables minimize and maximize before
-the window is shown, keeping native macOS controls and custom Windows captions consistent. The close
-button remains available, and a resizable dialog can still be resized from its edges.
-
-Use `window.IslandsDefaultAction(Confirm, () => confirmButton.IsEffectivelyEnabled)` to opt into
-Enter confirmation, including the macOS numeric keypad Enter key. Reuse the button's validation callback.
-Handled keys, modifier chords, repeated presses and active IME composition are ignored; focused buttons and multiline editors keep their
-own Enter behavior. `IslandsPrimaryButton()` only sets the visual style.
-
-## Requirements
-
-`net8.0` and `net10.0` assets. The library is `IsAotCompatible` and trims without warnings.
-
-## License
-
-MIT — see [`LICENSE`](https://github.com/nilaoda/MewUI.Themes.Islands/blob/main/LICENSE). Islands is by FormDev Software GmbH and is used here only as the reference
-for its published color values.
+The MewUI theme implementation is MIT licensed; see
+[LICENSE](https://github.com/nilaoda/MewUI.Themes.Islands/blob/main/LICENSE).
+The reference theme data and adapted palette values come from JetBrains under Apache 2.0;
+their role and exact upstream snapshot are recorded in
+[reference notes](https://github.com/nilaoda/MewUI.Themes.Islands/blob/main/docs/islands/README.md).
+The package declares `MIT AND Apache-2.0` and includes both license texts and
+[third-party notices](https://github.com/nilaoda/MewUI.Themes.Islands/blob/main/THIRD-PARTY-NOTICES.md).
+This is an independent community adaptation, not an official JetBrains or MewUI package.
+It is not affiliated with or endorsed by JetBrains or the MewUI maintainers.

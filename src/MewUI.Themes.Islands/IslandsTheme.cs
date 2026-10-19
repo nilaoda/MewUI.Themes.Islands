@@ -25,7 +25,7 @@ public static class IslandsTheme
     /// <summary>Whether the Islands style layer has been installed into the running application.</summary>
     public static bool IsInstalled { get; private set; }
 
-    /// <summary>The palette handed to <see cref="Install"/>; the default IntelliJ + Darcula pair otherwise.</summary>
+    /// <summary>The palette handed to <see cref="Install"/>; the default Islands Light + Dark pair otherwise.</summary>
     public static IslandsPalette Palette => _palette;
 
     /// <summary>The color table for a theme's variant. Read it inside drawing code, never cache it.</summary>

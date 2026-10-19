@@ -17,7 +17,7 @@ internal static class IslandsMenuStyles
 
     /// <summary>
     /// Islands lays the menu bar on the panel rather than on a button face, and closes it with the
-    /// separator line that IntelliJ keeps even when the frame is flat.
+    /// separator line that Islands keeps even when the frame is flat.
     /// </summary>
     private static Style MenuBarStyle() =>
         Style.DeriveFromDefault<MenuBar>(
@@ -44,7 +44,7 @@ internal static class IslandsMenuStyles
     /// <para>
     /// The rows themselves are an internal element type colored from <c>Palette.SelectionBackground</c>,
     /// which MewUI derives as an accent wash rather than Islands's flat selection color; the plate is
-    /// therefore paler than IntelliJ's. No style key reaches it. See <c>docs/color-map.md</c>.
+    /// therefore paler than Islands'. No style key reaches it. See <c>docs/color-map.md</c>.
     /// </para>
     /// <para>
     /// A menu row is Islands's own <c>List|Tree/rowHeight</c> (24) rather than the height MewUI derives from
