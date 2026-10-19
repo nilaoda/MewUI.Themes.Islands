@@ -18,8 +18,8 @@ The package targets **`net8.0` and `net10.0`**, matching the assets in
 `Aprillz.MewUI.Core` and `Aprillz.MewUI` 0.22.1. It depends only on `Aprillz.MewUI.Core`.
 The host application selects its platform and rendering backend.
 
-Building the repository requires the .NET 10 SDK configured in `src/global.json`.
-The demo and automated tests target .NET 10; .NET 8 is also a supported library target.
+To build the library from source or run the demo and tests, see the
+[repository build instructions](https://github.com/nilaoda/MewUI.Themes.Islands#build-test-and-pack).
 
 ## Install
 

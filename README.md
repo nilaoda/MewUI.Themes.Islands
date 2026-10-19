@@ -18,8 +18,7 @@ The first preview is `0.1.0-preview.1`. Public APIs may change between preview r
 The current dependency and integration baseline is MewUI `0.22.1`.
 
 The library targets `net8.0` and `net10.0`, matching both `Aprillz.MewUI.Core` and
-`Aprillz.MewUI` 0.22.1. Building this repository uses the .NET 10 SDK specified in
-`src/global.json`; the demo and automated tests run on .NET 10.
+`Aprillz.MewUI` 0.22.1.
 
 See the [package README](src/MewUI.Themes.Islands/README.md) for installation,
 startup examples, namespaces, components and validation scope.
@@ -37,6 +36,9 @@ menus in `Menus/`, window behavior in `Windowing/`, style rules in `Styles/`, an
 in `Drawing/`. Fluent entry points live in `Extensions/` and retain the root namespace.
 
 ## Build, test and pack
+
+Building from source requires the .NET 10 SDK configured in [src/global.json](src/global.json).
+The demo and automated tests target .NET 10; the library builds for both .NET 8 and .NET 10.
 
 ```sh
 cd src
