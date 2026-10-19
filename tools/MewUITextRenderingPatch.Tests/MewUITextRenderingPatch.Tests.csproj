@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IslandsPackageVersion Condition="'$(IslandsPackageVersion)' == ''">0.1.0-preview.3</IslandsPackageVersion>
+    <!-- Exercise the packaged targets and patched backend on any test host, without native windows. -->
+    <IslandsWindowsTextRenderingWorkaround>true</IslandsWindowsTextRenderingWorkaround>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Aprillz.MewUI.Backend.Direct2D" Version="0.22.1" />
+    <PackageReference Include="MewUI.Themes.Islands" Version="$(IslandsPackageVersion)" />
+  </ItemGroup>
+</Project>

@@ -18,8 +18,8 @@ public class WindowPlacementTests
     private const string Chrome = "Windowing/IslandsWindowChrome.cs";
 
     /// <summary>
-    /// The platform's biased answer is only wrong on macOS, so the claim that replaces it must not be made
-    /// anywhere else: a window handed <see cref="WindowStartupLocation.Manual"/> on Windows or X11 gets the
+    /// Only macOS needs the Manual takeover. Windows keeps the backend's startup mode and corrects its
+    /// final native move: a window handed <see cref="WindowStartupLocation.Manual"/> on Windows or X11 gets the
     /// framework's default instead of the placement it asked for.
     /// </summary>
     [Fact]

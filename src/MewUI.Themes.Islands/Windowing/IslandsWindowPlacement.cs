@@ -6,7 +6,7 @@ using Aprillz.MewUI.Controls;
 namespace MewUI.Themes.Islands.Windowing;
 
 /// <summary>
-/// Where a window that drew its own title bar lands, on the one platform that puts it in the wrong place.
+/// Initial placement corrections for windows that draw their own title bar.
 /// </summary>
 /// <remarks>
 /// <para>
@@ -17,8 +17,10 @@ namespace MewUI.Themes.Islands.Windowing;
 /// leaves the window visibly high, which every window it owns then inherits.
 /// </para>
 /// <para>
-/// Windows and X11 place a centred window in the actual middle, so nothing is taken over there and the
-/// platform answers for itself.
+/// On Windows, MewUI 0.22.1 adds non-client frame dimensions to extended-titlebar windows when calculating
+/// startup placement, even though those windows have no non-client frame. The final position is corrected
+/// in physical pixels through the shared Win32 hook, preserving the backend's monitor and DPI selection.
+/// X11 placement is left to the platform.
 /// </para>
 /// <para>
 /// Taking over is two moments, and the reason it cannot be one is that the platform places the window
@@ -67,6 +69,12 @@ internal sealed unsafe partial class IslandsWindowPlacement
     /// </remarks>
     internal void Place()
     {
+        if (OperatingSystem.IsWindows())
+        {
+            _windowsPlacementPending = _window.StartupLocation != WindowStartupLocation.Manual;
+            return;
+        }
+
         switch (_centreOn)
         {
             case null:

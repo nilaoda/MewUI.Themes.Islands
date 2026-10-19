@@ -25,7 +25,7 @@
     <PackageLicenseExpression>MIT AND Apache-2.0</PackageLicenseExpression>
     <PackageTags>mewui;theme;islands;desktop;nativeaot</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageReleaseNotes>Adds responsive search toolbars, integrated search fields, stable icon-and-label menu triggers, and search/filter/sort/layers/navigation icons. Built and tested with MewUI 0.22.1; public APIs may change between preview releases.</PackageReleaseNotes>
+    <PackageReleaseNotes>Fixes initial Windows placement for custom-titlebar windows using actual frame dimensions, owner centering, and monitor work-area limits. Includes a build-time Windows Direct2D text workaround restricted to MewUI 0.22.1: system parameters at 96 DPI and original smoothing above 96 DPI. Documents framework workarounds and their removal conditions. Built and tested with MewUI 0.22.1; public APIs may change between preview releases.</PackageReleaseNotes>
     <PackageProjectUrl>https://github.com/nilaoda/MewUI.Themes.Islands</PackageProjectUrl>
     <RepositoryUrl>https://github.com/nilaoda/MewUI.Themes.Islands.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -54,6 +54,17 @@
     <None Include="../../LICENSE" Pack="true" PackagePath="/" Visible="false" />
     <None Include="../../THIRD-PARTY-NOTICES.md" Pack="true" PackagePath="/" Visible="false" />
     <None Include="../../licenses/Apache-2.0.txt" Pack="true" PackagePath="licenses/" Visible="false" />
+    <None Include="../../licenses/Mono.Cecil-MIT.txt" Pack="true" PackagePath="licenses/" Visible="false" />
+    <None Include="buildTransitive/MewUI.Themes.Islands.targets" Pack="true" PackagePath="buildTransitive/" Visible="false" />
   </ItemGroup>
+
+  <!-- Build tooling is shipped inside this package, never as an application runtime dependency. -->
+  <Target Name="PackWindowsTextRenderingTool" BeforeTargets="_GetPackageFiles">
+    <Exec Command="dotnet build &quot;$(MSBuildThisFileDirectory)../../tools/MewUITextRenderingPatch/MewUITextRenderingPatch.csproj&quot; -c Release --nologo --verbosity quiet" />
+    <ItemGroup>
+      <None Include="../../tools/MewUITextRenderingPatch/bin/Release/net8.0/*.dll;../../tools/MewUITextRenderingPatch/bin/Release/net8.0/*.json"
+            Pack="true" PackagePath="tools/net8.0/" Visible="false" />
+    </ItemGroup>
+  </Target>
 
 </Project>

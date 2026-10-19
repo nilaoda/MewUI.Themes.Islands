@@ -10,7 +10,7 @@ and reusable workspace, menu and window components.
 
 ## Preview status and compatibility
 
-Version `0.1.0-preview.2` adds responsive search fields, toolbars and search/filter/sort/version icons.
+Version `0.1.0-preview.3` fixes initial Windows placement for custom-titlebar windows, including owner centering and work-area limits, and includes a low-DPI Direct2D text fix.
 Public APIs may change between preview releases.
 It is built and tested against MewUI `0.22.1`; later MewUI versions need separate verification,
 especially for window integration and dialog keyboard routing.
@@ -28,7 +28,7 @@ In a MewUI application:
 
 ```sh
 dotnet add package Aprillz.MewUI --version 0.22.1
-dotnet add package MewUI.Themes.Islands --version 0.1.0-preview.2
+dotnet add package MewUI.Themes.Islands --version 0.1.0-preview.3
 ```
 
 If the application already uses MewUI's individual platform/backend packages, keep that setup
@@ -199,6 +199,40 @@ Closing remains available, and resizing follows the window's size settings.
 confirmation, including macOS keypad Enter. Handled events, modifier chords, repeated key presses
 and active IME composition are ignored. Focused buttons and multiline editors retain their own
 Enter behavior. `IslandsPrimaryButton()` changes appearance only.
+
+## Framework workarounds
+
+The theme includes compatibility fixes for MewUI 0.22.1: low-DPI Windows Direct2D text rendering,
+initial Windows centering of custom-titlebar windows, geometric macOS centering, macOS title-strip
+maximization, inactive-owner hover cleanup, and macOS keypad Enter routing. The Windows placement correction is new in preview.3 and still needs
+manual validation on Windows. Implementations, affected paths and removal conditions are listed in the
+[repository workaround inventory](https://github.com/nilaoda/MewUI.Themes.Islands#framework-workarounds).
+
+### Windows text rendering
+
+The NuGet package automatically patches a build-output copy of `Aprillz.MewUI.Backend.Direct2D`
+for Windows targets. At 100% scaling it uses DirectWrite system rendering parameters; above 100%
+it preserves MewUI's original smoothing. The choice follows each render target's DPI, including
+moving a window between monitors. NuGet cache assemblies and font settings are not modified.
+
+Both the backend NuGet version (when available) and assembly version must match **0.22.1**.
+An unknown version fails the build with an upgrade instruction. To disable this workaround:
+
+```xml
+<PropertyGroup>
+  <IslandsWindowsTextRenderingWorkaround>false</IslandsWindowsTextRenderingWorkaround>
+</PropertyGroup>
+```
+
+The default value is `auto`: Windows RIDs (including cross-publishing), or a Windows build host
+when no RID is specified. `true` forces the patch on any host for headless integration checks.
+Core-only projects without a copy-local Direct2D backend are skipped. The package does not choose
+the application's backend; automatic detection is based on the Direct2D assembly being present.
+
+The bundled build tool runs on .NET 8 or a later installed major runtime. Consumers do not build
+the tool or restore Mono.Cecil separately. These build-only assets are excluded from application
+output; the patched backend supports ordinary builds, single-file publishing, trimming and NativeAOT.
+Building through a source `ProjectReference` does not import NuGet `buildTransitive` assets.
 
 ## Validation scope
 

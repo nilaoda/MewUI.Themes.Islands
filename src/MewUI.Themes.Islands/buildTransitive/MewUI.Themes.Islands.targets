@@ -1,0 +1,44 @@
+<Project>
+  <PropertyGroup>
+    <!-- auto: Windows targets only; true also allows headless verification on other hosts. -->
+    <IslandsWindowsTextRenderingWorkaround Condition="'$(IslandsWindowsTextRenderingWorkaround)' == ''">auto</IslandsWindowsTextRenderingWorkaround>
+    <_IslandsTextPatchTool>$(MSBuildThisFileDirectory)../tools/net8.0/MewUITextRenderingPatch.dll</_IslandsTextPatchTool>
+    <_IslandsTextPatchHost Condition="'$(DOTNET_HOST_PATH)' != ''">$(DOTNET_HOST_PATH)</_IslandsTextPatchHost>
+    <_IslandsTextPatchHost Condition="'$(_IslandsTextPatchHost)' == ''">dotnet</_IslandsTextPatchHost>
+  </PropertyGroup>
+
+  <!-- Evaluate RID conditions here: publish profiles may assign the RID after this file is imported. -->
+  <Target Name="PatchIslandsWindowsTextRendering" AfterTargets="ResolveReferences"
+          Condition="'$(DesignTimeBuild)' != 'true' and ('$(IslandsWindowsTextRenderingWorkaround)' == 'true' or ('$(IslandsWindowsTextRenderingWorkaround)' == 'auto' and ($([System.String]::Copy('$(RuntimeIdentifier)').StartsWith('win-')) or ('$(RuntimeIdentifier)' == '' and $([MSBuild]::IsOSPlatform('Windows'))))))">
+    <ItemGroup>
+      <_IslandsOriginalTextBackend Include="@(ReferenceCopyLocalPaths)"
+                                   Condition="'%(Filename)%(Extension)' == 'Aprillz.MewUI.Backend.Direct2D.dll'" />
+    </ItemGroup>
+    <!-- Core-only or backend-specific consumers without Direct2D need no rendering patch. -->
+    <Error Condition="'@(_IslandsOriginalTextBackend->Count())' &gt; '1'" Text="Islands Windows text workaround expected one Direct2D backend." />
+    <Error Condition="'%(_IslandsOriginalTextBackend.NuGetPackageVersion)' != '' and '%(_IslandsOriginalTextBackend.NuGetPackageVersion)' != '0.22.1'"
+           Text="Islands Windows text workaround only supports MewUI 0.22.1; resolved Direct2D %(_IslandsOriginalTextBackend.NuGetPackageVersion). Review the workaround when upgrading, or set IslandsWindowsTextRenderingWorkaround=false to disable it." />
+    <PropertyGroup Condition="'@(_IslandsOriginalTextBackend)' != ''">
+      <_IslandsPatchedTextBackend>$(IntermediateOutputPath)islands-workarounds/Aprillz.MewUI.Backend.Direct2D.dll</_IslandsPatchedTextBackend>
+      <_IslandsTextPatchReferences>$(IntermediateOutputPath)islands-workarounds/references.txt</_IslandsTextPatchReferences>
+    </PropertyGroup>
+    <MakeDir Directories="$(IntermediateOutputPath)islands-workarounds" Condition="'$(_IslandsPatchedTextBackend)' != ''" />
+    <WriteLinesToFile File="$(_IslandsTextPatchReferences)" Lines="@(ReferencePath)" Overwrite="true" Condition="'$(_IslandsPatchedTextBackend)' != ''" />
+    <Exec Command="&quot;$(_IslandsTextPatchHost)&quot; &quot;$(_IslandsTextPatchTool)&quot; &quot;@(_IslandsOriginalTextBackend)&quot; &quot;$(_IslandsPatchedTextBackend)&quot; &quot;$(_IslandsTextPatchReferences)&quot;" Condition="'$(_IslandsPatchedTextBackend)' != ''" />
+    <ItemGroup Condition="'$(_IslandsPatchedTextBackend)' != ''">
+      <ReferenceCopyLocalPaths Remove="@(_IslandsOriginalTextBackend)" />
+      <ReferenceCopyLocalPaths Include="$(_IslandsPatchedTextBackend)" DestinationSubDirectory="" />
+    </ItemGroup>
+  </Target>
+
+  <!-- Replace assets before single-file bundling AND NativeAOT collect their inputs. -->
+  <Target Name="PublishIslandsWindowsTextRendering" AfterTargets="_ComputeResolvedCopyLocalPublishAssets"
+          DependsOnTargets="PatchIslandsWindowsTextRendering">
+    <Error Condition="'$(_IslandsPatchedTextBackend)' != '' and !Exists('$(_IslandsPatchedTextBackend)')" Text="Build the Islands Windows text rendering workaround before publishing." />
+    <ItemGroup Condition="'$(_IslandsPatchedTextBackend)' != ''">
+      <_ResolvedCopyLocalPublishAssets Remove="@(_ResolvedCopyLocalPublishAssets)"
+                                      Condition="'%(Filename)%(Extension)' == 'Aprillz.MewUI.Backend.Direct2D.dll'" />
+      <_ResolvedCopyLocalPublishAssets Include="$(_IslandsPatchedTextBackend)" DestinationSubPath="Aprillz.MewUI.Backend.Direct2D.dll" AssetType="runtime" CopyToPublishDirectory="PreserveNewest" />
+    </ItemGroup>
+  </Target>
+</Project>

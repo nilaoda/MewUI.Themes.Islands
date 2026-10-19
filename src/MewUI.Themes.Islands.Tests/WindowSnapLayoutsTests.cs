@@ -10,7 +10,7 @@ public class WindowSnapLayoutsTests
     [Fact]
     public void Rebuilding_the_caption_rebinds_hover_and_press_to_the_new_button()
     {
-        var snap = new IslandsWindowSnapLayouts(new Window());
+        var snap = new IslandsWindowNativeHook(new Window());
         int oldCalls = 0;
         bool hot = true;
         bool pressed = false;
@@ -35,7 +35,7 @@ public class WindowSnapLayoutsTests
         button.Measure(new Size(46, 28));
         button.Arrange(new Rect(0, 0, 46, 28));
         Assert.True(button.RenderSize.Width > 0);
-        var snap = new IslandsWindowSnapLayouts(new Window());
+        var snap = new IslandsWindowNativeHook(new Window());
         snap.UpdateTarget(button, _ => { }, _ => { });
 
         Assert.False(snap.Answer(0x0084, 0, 0, out _)); // WM_NCHITTEST

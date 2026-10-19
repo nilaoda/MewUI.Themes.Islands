@@ -65,16 +65,16 @@ public sealed class IslandsWindowChrome
     private bool _pendingStripToggle;
 
     /// <summary>The window's one native hook, rebound whenever its caption controls are rebuilt.</summary>
-    private readonly IslandsWindowSnapLayouts _snapLayouts;
+    private readonly IslandsWindowNativeHook _nativeHook;
 
     internal IslandsWindowChrome(Window window)
     {
         _window = window;
         IslandsWindowHover.Attach(window);
-        _snapLayouts = new IslandsWindowSnapLayouts(window);
 
         // Claimed here, at the point the window is certainly still unshown, and applied from Loaded.
         _placement = new IslandsWindowPlacement(window);
+        _nativeHook = new IslandsWindowNativeHook(window, _placement.CorrectWindowsStartupPosition);
     }
 
     /// <summary>
@@ -211,7 +211,7 @@ public sealed class IslandsWindowChrome
         Add(CaptionButton(IslandsMetrics.CaptionButtonWidth, Glyph(CaptionGlyph.Minimize), CaptionGlyph.Minimize, window.Minimize).Surface, () => window.CanMinimize);
 
         // Kept, because the system wants to be told where this one is: the layout flyout is offered over the
-        // maximize button and nowhere else. See IslandsWindowSnapLayouts.
+        // maximize button and nowhere else. See IslandsWindowNativeHook.
         var restore = MaximizeButton(window);
         _restore = restore;
         Add(restore.Surface, () => window.CanMaximize);
@@ -331,7 +331,7 @@ public sealed class IslandsWindowChrome
 
         // One place decides what the button looks like, because two different things drive it: the pointer
         // while the strip owns its input, and the non-client messages once the system has taken the maximize
-        // button for its layout flyout. See IslandsWindowSnapLayouts.
+        // button for its layout flyout. See IslandsWindowNativeHook.
         void Repaint()
         {
             var hue = HoverHue(IslandsTheme.CurrentColors, close);
@@ -543,7 +543,7 @@ public sealed class IslandsWindowChrome
     /// Handed back rather than kept private because the maximize button has a second owner on Windows: the
     /// system takes the pointer over it so it can offer the layout flyout, and the button's look then has to
     /// be driven from the non-client messages instead of the usual enter/leave pair. See
-    /// <see cref="IslandsWindowSnapLayouts"/>.
+    /// <see cref="IslandsWindowNativeHook"/>.
     /// </remarks>
     private readonly record struct CaptionFace(Border Surface, Action<bool> SetHot, Action<bool> SetPressed);
 
@@ -699,9 +699,9 @@ public sealed class IslandsWindowChrome
         // point it at the current control, including while that control is waiting to join the visual tree.
         if (drawCaptions && _restore is { } restore)
         {
-            _snapLayouts.UpdateTarget(restore.Surface, restore.SetHot, restore.SetPressed);
-            _snapLayouts.TryInstall();
+            _nativeHook.UpdateTarget(restore.Surface, restore.SetHot, restore.SetPressed);
         }
+        _nativeHook.TryInstall();
 
         // The system's window buttons run to the window's own corner and span the whole strip, so a strip
         // that draws them drops its inset on those sides too. The vertical inset matters as much as the

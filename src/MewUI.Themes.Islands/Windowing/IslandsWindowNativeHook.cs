@@ -7,7 +7,7 @@ using Aprillz.MewUI.Controls;
 namespace MewUI.Themes.Islands.Windowing;
 
 /// <summary>
-/// Windows 11's Snap Layouts, offered over a window button the theme drew itself.
+/// One Win32 subclass for initial placement and Windows 11 Snap Layouts over custom chrome.
 /// </summary>
 /// <remarks>
 /// <para>
@@ -31,7 +31,7 @@ namespace MewUI.Themes.Islands.Windowing;
 /// two states the button needs to keep looking alive.
 /// </para>
 /// </remarks>
-internal sealed class IslandsWindowSnapLayouts
+internal sealed class IslandsWindowNativeHook
 {
     private const uint WmNcHitTest = 0x0084;
     private const uint WmNcMouseMove = 0x00A0;
@@ -39,6 +39,7 @@ internal sealed class IslandsWindowSnapLayouts
     private const uint WmNcLButtonUp = 0x00A2;
     private const uint WmNcMouseLeave = 0x02A2;
     private const uint WmNcDestroy = 0x0082;
+    private const uint WmWindowPosChanging = 0x0046;
 
     /// <summary>The answer that hands a point to the system's maximize button.</summary>
     private const int HtMaxButton = 9;
@@ -53,6 +54,7 @@ internal sealed class IslandsWindowSnapLayouts
     private static readonly nint Proc;
 
     private readonly Window _window;
+    private readonly Action<nint>? _positionChanging;
     private UIElement? _button;
     private Action<bool>? _setHot;
     private Action<bool>? _setPressed;
@@ -60,7 +62,7 @@ internal sealed class IslandsWindowSnapLayouts
     private GCHandle _self;
     private bool _tracking;
 
-    static IslandsWindowSnapLayouts()
+    static IslandsWindowNativeHook()
     {
         unsafe
         {
@@ -68,9 +70,10 @@ internal sealed class IslandsWindowSnapLayouts
         }
     }
 
-    internal IslandsWindowSnapLayouts(Window window)
+    internal IslandsWindowNativeHook(Window window, Action<nint>? positionChanging = null)
     {
         _window = window;
+        _positionChanging = positionChanging;
     }
 
     /// <summary>Rebinds the existing hook when the title bar is rebuilt.</summary>
@@ -88,7 +91,7 @@ internal sealed class IslandsWindowSnapLayouts
     /// <summary>Installs one hook per window, once its native handle exists.</summary>
     internal bool TryInstall()
     {
-        if (!IsSupported || _self.IsAllocated)
+        if (!OperatingSystem.IsWindows() || _self.IsAllocated)
         {
             return true;
         }
@@ -131,13 +134,17 @@ internal sealed class IslandsWindowSnapLayouts
         // A managed exception must never escape a native window procedure: Windows terminates the process.
         try
         {
-            if (refData != 0 && GCHandle.FromIntPtr(refData).Target is IslandsWindowSnapLayouts snap)
+            if (refData != 0 && GCHandle.FromIntPtr(refData).Target is IslandsWindowNativeHook snap)
             {
                 if (msg == WmNcDestroy)
                 {
                     snap.Release(hwnd);
                 }
-                else if (snap.Answer(msg, wParam, lParam, out nint result))
+                else if (msg == WmWindowPosChanging)
+                {
+                    snap._positionChanging?.Invoke(lParam);
+                }
+                else if (IsSupported && snap.Answer(msg, wParam, lParam, out nint result))
                 {
                     return result;
                 }
@@ -145,7 +152,7 @@ internal sealed class IslandsWindowSnapLayouts
         }
         catch (Exception exception)
         {
-            Trace.TraceError("Snap Layouts message 0x{0:X}: {1}", msg, exception);
+            Trace.TraceError("Islands window message 0x{0:X}: {1}", msg, exception);
         }
 
         return DefSubclassProc(hwnd, msg, wParam, lParam);

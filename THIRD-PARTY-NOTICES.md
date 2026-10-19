@@ -25,3 +25,10 @@ The original MewUI theme implementation is licensed under [MIT](LICENSE).
 The NuGet license expression combines both as `MIT AND Apache-2.0`.
 
 This project is not affiliated with or endorsed by JetBrains.
+
+## Mono.Cecil
+
+The NuGet package bundles Mono.Cecil 0.11.6 and its helper assemblies for the build-time
+Windows text rendering patch tool. They are not dependencies of the application's runtime.
+Source: [jbevain/cecil, tag 0.11.6](https://github.com/jbevain/cecil/tree/0.11.6).
+The MIT copyright notice and license are included in [licenses/Mono.Cecil-MIT.txt](licenses/Mono.Cecil-MIT.txt).
