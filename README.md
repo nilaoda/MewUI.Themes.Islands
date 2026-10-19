@@ -1,5 +1,10 @@
 # MewUI.Themes.Islands
 
+[![NuGet version](https://img.shields.io/nuget/vpre/MewUI.Themes.Islands?label=NuGet&color=2563eb&logo=nuget&logoColor=white)](https://www.nuget.org/packages/MewUI.Themes.Islands)
+[![NuGet downloads](https://img.shields.io/nuget/dt/MewUI.Themes.Islands?color=2563eb&logo=nuget&logoColor=white)](https://www.nuget.org/packages/MewUI.Themes.Islands)
+[![Status: Preview](https://img.shields.io/badge/status-preview-d97706)](#preview-status)
+[![.NET 8 and .NET 10](https://img.shields.io/badge/.NET-8%20%7C%2010-512bd4?logo=dotnet&logoColor=white)](src/MewUI.Themes.Islands/MewUI.Themes.Islands.csproj)
+
 An independent Islands-inspired theme for [MewUI](https://github.com/aprillz/MewUI).
 It provides light and dark palettes, regular and compact density, control styles,
 and reusable workspace, menu and window components.
