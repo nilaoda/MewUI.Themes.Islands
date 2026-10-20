@@ -206,7 +206,7 @@ The theme includes compatibility fixes for MewUI 0.22.1: low-DPI Windows Direct2
 initial Windows centering of custom-titlebar windows, geometric macOS centering, macOS title-strip
 maximization, inactive-owner hover cleanup, and macOS keypad Enter routing. The Windows placement correction is new in preview.3 and still needs
 manual validation on Windows. Implementations, affected paths and removal conditions are listed in the
-[repository workaround inventory](https://github.com/nilaoda/MewUI.Themes.Islands#framework-workarounds).
+[repository workaround inventory](https://github.com/nilaoda/MewUI.Themes.Islands/blob/main/docs/framework-workarounds.md).
 
 ### Windows text rendering
 
@@ -244,6 +244,12 @@ Building through a source `ProjectReference` does not import NuGet `buildTransit
   validate the host application's NativeAOT publish and runtime behavior on each intended target.
 
 Reference data and the demo are not included in the NuGet package.
+
+## AI-assisted development
+
+This project is developed through collaboration across multiple AI models and tools
+for implementation, refactoring, documentation and test development. The maintainer
+is responsible for project direction and release decisions.
 
 ## References and license
 
