@@ -25,7 +25,7 @@
     <PackageLicenseExpression>MIT AND Apache-2.0</PackageLicenseExpression>
     <PackageTags>mewui;theme;islands;desktop;nativeaot</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageReleaseNotes>Fixes initial Windows placement for custom-titlebar windows using actual frame dimensions, owner centering, and monitor work-area limits. Includes a build-time Windows Direct2D text workaround restricted to MewUI 0.22.1: system parameters at 96 DPI and original smoothing above 96 DPI. Documents framework workarounds and their removal conditions. Built and tested with MewUI 0.22.1; public APIs may change between preview releases.</PackageReleaseNotes>
+    <PackageReleaseNotes>Fixes unintended Windows window movement when clicking the title bar with a native dropdown open: the press dismisses the popup without starting a window drag. Centers title-bar controls vertically for balanced spacing. Retains existing Windows text rendering and placement compatibility fixes. Built and tested with MewUI 0.22.1; public APIs may change between preview releases.</PackageReleaseNotes>
     <PackageProjectUrl>https://github.com/nilaoda/MewUI.Themes.Islands</PackageProjectUrl>
     <RepositoryUrl>https://github.com/nilaoda/MewUI.Themes.Islands.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>

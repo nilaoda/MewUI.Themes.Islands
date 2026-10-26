@@ -94,8 +94,8 @@ public static class IslandsMetrics
     public const double TitleBarHeight = 32;
 
     /// <summary>
-    /// The inset a title strip keeps at its own edges when the platform draws no window buttons in it. The
-    /// vertical two leaves the strip's content box at <see cref="TitleBarControlHeight"/>.
+    /// The default inset when the strip retains native caption buttons. Hosted controls are centered
+    /// independently at <see cref="TitleBarControlHeight"/> within the remaining content height.
     /// </summary>
     public static Thickness TitleBarPadding { get; } = new(12, 2, 12, 2);
 

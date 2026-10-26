@@ -74,7 +74,8 @@ public sealed class IslandsWindowChrome
 
         // Claimed here, at the point the window is certainly still unshown, and applied from Loaded.
         _placement = new IslandsWindowPlacement(window);
-        _nativeHook = new IslandsWindowNativeHook(window, _placement.CorrectWindowsStartupPosition);
+        _nativeHook = new IslandsWindowNativeHook(window, _placement.CorrectWindowsStartupPosition,
+            hit => IslandsWindowPopupDismissal.IsTitleBarDragTarget(hit, _strips, _captionRows));
     }
 
     /// <summary>
@@ -586,6 +587,8 @@ public sealed class IslandsWindowChrome
             // ends up filling a 28 DIP bar. A local maximum pins it.
             control.MinHeight(IslandsMetrics.TitleBarControlHeight);
             control.MaxHeight(IslandsMetrics.TitleBarControlHeight);
+            // A constrained control otherwise stays at the slot's top, beside full-height captions.
+            control.VerticalAlignment(VerticalAlignment.Center);
         }
 
         if (element is Panel panel)

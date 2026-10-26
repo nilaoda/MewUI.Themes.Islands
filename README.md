@@ -24,7 +24,7 @@ Add the theme to a MewUI application:
 
 ```sh
 dotnet add package Aprillz.MewUI --version 0.22.1
-dotnet add package MewUI.Themes.Islands --version 0.1.0-preview.3
+dotnet add package MewUI.Themes.Islands --version 0.1.0-preview.4
 ```
 
 If your application already references MewUI's individual platform and rendering packages,
@@ -36,7 +36,8 @@ component APIs and window integration.
 
 ## Preview status
 
-The current source version is `0.1.0-preview.3`, fixing initial Windows placement and low-DPI Direct2D text rendering.
+The current source version is `0.1.0-preview.4`, fixing unintended Windows window movement when
+clicking the title bar with a dropdown open, and vertically centering controls hosted in the title bar.
 See the NuGet badge above for the latest published version. Public APIs may change between preview releases.
 The current dependency and integration baseline is MewUI `0.22.1`.
 
@@ -97,6 +98,10 @@ runs automatically at build time for NuGet consumers.
 See the [workaround inventory](docs/framework-workarounds.md) for implementation links,
 activation and opt-out behavior, validation requirements, and removal conditions when upgrading MewUI.
 The preview.3 Windows placement correction still needs manual validation on Windows.
+
+Starting with preview.4, clicking the draggable title area on Windows closes the open dropdown
+and consumes that press.
+The next press can drag the window normally.
 
 ## AI-assisted development
 

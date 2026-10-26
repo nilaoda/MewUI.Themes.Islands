@@ -7,7 +7,7 @@ using Aprillz.MewUI.Controls;
 namespace MewUI.Themes.Islands.Windowing;
 
 /// <summary>
-/// One Win32 subclass for initial placement and Windows 11 Snap Layouts over custom chrome.
+/// One Win32 subclass for initial placement, popup dismissal and Windows 11 Snap Layouts over custom chrome.
 /// </summary>
 /// <remarks>
 /// <para>
@@ -55,6 +55,7 @@ internal sealed class IslandsWindowNativeHook
 
     private readonly Window _window;
     private readonly Action<nint>? _positionChanging;
+    private readonly Func<UIElement?, bool>? _isTitleBarDragTarget;
     private UIElement? _button;
     private Action<bool>? _setHot;
     private Action<bool>? _setPressed;
@@ -70,10 +71,12 @@ internal sealed class IslandsWindowNativeHook
         }
     }
 
-    internal IslandsWindowNativeHook(Window window, Action<nint>? positionChanging = null)
+    internal IslandsWindowNativeHook(Window window, Action<nint>? positionChanging = null,
+        Func<UIElement?, bool>? isTitleBarDragTarget = null)
     {
         _window = window;
         _positionChanging = positionChanging;
+        _isTitleBarDragTarget = isTitleBarDragTarget;
     }
 
     /// <summary>Rebinds the existing hook when the title bar is rebuilt.</summary>
@@ -143,6 +146,11 @@ internal sealed class IslandsWindowNativeHook
                 else if (msg == WmWindowPosChanging)
                 {
                     snap._positionChanging?.Invoke(lParam);
+                }
+                else if (snap._isTitleBarDragTarget is { } isDragTarget
+                    && IslandsWindowPopupDismissal.TryDismiss(snap._window, msg, wParam, lParam, isDragTarget))
+                {
+                    return 0;
                 }
                 else if (IsSupported && snap.Answer(msg, wParam, lParam, out nint result))
                 {

@@ -10,7 +10,9 @@ and reusable workspace, menu and window components.
 
 ## Preview status and compatibility
 
-Version `0.1.0-preview.3` fixes initial Windows placement for custom-titlebar windows, including owner centering and work-area limits, and includes a low-DPI Direct2D text fix.
+Version `0.1.0-preview.4` fixes unintended Windows window movement when clicking the title bar
+with a dropdown open. It also vertically centers title-bar controls, giving dropdowns and toolbar
+buttons balanced space above and below.
 Public APIs may change between preview releases.
 It is built and tested against MewUI `0.22.1`; later MewUI versions need separate verification,
 especially for window integration and dialog keyboard routing.
@@ -28,7 +30,7 @@ In a MewUI application:
 
 ```sh
 dotnet add package Aprillz.MewUI --version 0.22.1
-dotnet add package MewUI.Themes.Islands --version 0.1.0-preview.3
+dotnet add package MewUI.Themes.Islands --version 0.1.0-preview.4
 ```
 
 If the application already uses MewUI's individual platform/backend packages, keep that setup
@@ -207,6 +209,10 @@ initial Windows centering of custom-titlebar windows, geometric macOS centering,
 maximization, inactive-owner hover cleanup, and macOS keypad Enter routing. The Windows placement correction is new in preview.3 and still needs
 manual validation on Windows. Implementations, affected paths and removal conditions are listed in the
 [repository workaround inventory](https://github.com/nilaoda/MewUI.Themes.Islands/blob/main/docs/framework-workarounds.md).
+
+Starting with preview.4, a press on the draggable title area on Windows dismisses the open dropdown
+and is consumed;
+the next press can drag the window normally. Caption buttons and toolbar controls keep their normal behavior.
 
 ### Windows text rendering
 
