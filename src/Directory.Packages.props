@@ -15,6 +15,7 @@
 
     <!-- xunit.v3 ships its own Microsoft.Testing.Platform entry point. -->
     <PackageVersion Include="xunit.v3" Version="4.0.2" />
+    <PackageVersion Include="Aprillz.MewUI.Platform.X11" Version="0.22.1" />
   </ItemGroup>
 
 </Project>

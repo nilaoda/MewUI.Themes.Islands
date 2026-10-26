@@ -54,6 +54,7 @@ public sealed class IslandsWindowChrome
     private readonly List<Border> _strips = [];
     private readonly HashSet<Border> _leftAlignedStrips = [];
     private readonly List<TextBlock> _headings = [];
+    private readonly HashSet<Border> _actionStrips = [];
     private readonly List<UIElement> _captionRows = [];
     private readonly List<(UIElement Button, Func<bool> Allowed)> _captionButtons = [];
 
@@ -91,6 +92,10 @@ public sealed class IslandsWindowChrome
     public Border TitleBar(string title, UIElement? actions, HorizontalAlignment titleAlignment)
     {
         ArgumentNullException.ThrowIfNull(title);
+        if (UsesNativeTitleBar)
+        {
+            _window.Title = title;
+        }
 
         var bar = new Border()
             .IslandsToolbarSurface()
@@ -112,6 +117,10 @@ public sealed class IslandsWindowChrome
             0)));
 
         _strips.Add(bar);
+        if (actions is not null)
+        {
+            _actionStrips.Add(bar);
+        }
         if (titleAlignment == HorizontalAlignment.Left)
         {
             _leftAlignedStrips.Add(bar);
@@ -136,6 +145,11 @@ public sealed class IslandsWindowChrome
     {
         ArgumentException.ThrowIfNullOrEmpty(title);
 
+        if (UsesNativeTitleBar)
+        {
+            _window.Title = title;
+        }
+
         foreach (TextBlock heading in _headings)
         {
             heading.Text = title;
@@ -155,8 +169,8 @@ public sealed class IslandsWindowChrome
     /// below it.
     /// </para>
     /// <para>
-    /// The two only meet if a window is narrow enough for a centred title to reach its actions; a window that
-    /// states a minimum width worth the name is wider than that.
+    /// The heading reserves the actions' measured width on both sides when centered. Long captions are
+    /// trimmed within that space instead of painting underneath the toolbar.
     /// </para>
     /// </remarks>
     private UIElement Strip(Window window, string title, UIElement? actions, HorizontalAlignment titleAlignment)
@@ -165,20 +179,24 @@ public sealed class IslandsWindowChrome
             .Text(title)
             .IslandsSectionTitle()
             .VerticalAlignment(VerticalAlignment.Center)
-            .HorizontalAlignment(titleAlignment)
-            .GridPosition(0, 0);
+            // Fill the constrained slot: MewUI preserves a centered element's natural width even
+            // when it exceeds its slot. Center the text within the slot instead, so trimming applies.
+            .HorizontalAlignment(HorizontalAlignment.Stretch)
+            .TextAlignment(titleAlignment switch
+            {
+                HorizontalAlignment.Center => TextAlignment.Center,
+                HorizontalAlignment.Right => TextAlignment.Right,
+                _ => TextAlignment.Left,
+            })
+            .TextTrimming(TextTrimming.CharacterEllipsis);
 
         _headings.Add(heading);
-
-        var row = new Grid().Columns(GridLength.Star);
-        row.Children(heading);
 
         var tail = new StackPanel()
             .Horizontal()
             .Spacing(8)
             .VerticalAlignment(VerticalAlignment.Center)
-            .HorizontalAlignment(HorizontalAlignment.Right)
-            .GridPosition(0, 0);
+            .HorizontalAlignment(HorizontalAlignment.Right);
 
         if (actions is not null)
         {
@@ -193,7 +211,7 @@ public sealed class IslandsWindowChrome
         _captionRows.Add(captions);
         tail.Children(captions);
 
-        return row.Children(tail);
+        return new IslandsTitleBarLayout(heading, tail, titleAlignment == HorizontalAlignment.Center);
     }
 
     /// <summary>
@@ -620,7 +638,7 @@ public sealed class IslandsWindowChrome
     /// </remarks>
     private void OnStripMouseDown(MouseEventArgs args)
     {
-        if (args.Handled || args.Button != MouseButton.Left)
+        if (UsesNativeTitleBar || args.Handled || args.Button != MouseButton.Left)
         {
             return;
         }
@@ -686,7 +704,19 @@ public sealed class IslandsWindowChrome
     {
         // The window buttons, now that the platform can say whether it draws its own. macOS keeps its traffic
         // lights and reports NativeChromeButtons, so none of this happens there.
-        bool drawCaptions = !_window.HasNativeChromeButtons;
+        bool nativeTitleBar = UsesNativeTitleBar;
+        bool drawCaptions = !nativeTitleBar && !_window.HasNativeChromeButtons;
+
+        foreach (var heading in _headings)
+        {
+            heading.IsVisible(!nativeTitleBar);
+        }
+
+        foreach (var strip in _strips)
+        {
+            // Without actions, a native-framed dialog needs no second, empty title strip.
+            strip.IsVisible(!nativeTitleBar || _actionStrips.Contains(strip));
+        }
 
         foreach (var captions in _captionRows)
         {
@@ -738,6 +768,13 @@ public sealed class IslandsWindowChrome
                 element.Background(IslandsTheme.Colors(theme).ToolBarBackground.WithAlpha(tint)));
         }
     }
+
+    // X11 0.22.1 leaves SetExtendClientAreaToTitleBar unimplemented. Keep its native frame and
+    // treat our strip as a toolbar, preserving the window manager's resize grips and decorations.
+    private bool UsesNativeTitleBar => UseNativeTitleBar(OperatingSystem.IsLinux(), _window.ChromeCapabilities);
+
+    internal static bool UseNativeTitleBar(bool isLinux, WindowChromeCapabilities capabilities) =>
+        isLinux && !capabilities.HasFlag(WindowChromeCapabilities.ExtendClientArea);
 
     /// <summary>Reserves native caption buttons when the workspace title occupies their side.</summary>
     internal static Thickness TitlePadding(bool drawCaptions, Thickness nativeInset, bool leftAligned)

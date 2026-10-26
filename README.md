@@ -24,7 +24,7 @@ Add the theme to a MewUI application:
 
 ```sh
 dotnet add package Aprillz.MewUI --version 0.22.1
-dotnet add package MewUI.Themes.Islands --version 0.1.0-preview.4
+dotnet add package MewUI.Themes.Islands --version 0.1.0-preview.5
 ```
 
 If your application already references MewUI's individual platform and rendering packages,
@@ -36,8 +36,9 @@ component APIs and window integration.
 
 ## Preview status
 
-The current source version is `0.1.0-preview.4`, fixing unintended Windows window movement when
-clicking the title bar with a dropdown open, and vertically centering controls hosted in the title bar.
+The current source version is `0.1.0-preview.5`, retaining native Linux title bars without duplicate
+captions and automatically correcting X11 popup dismissal. Title headings also reserve toolbar space
+instead of overlapping actions.
 See the NuGet badge above for the latest published version. Public APIs may change between preview releases.
 The current dependency and integration baseline is MewUI `0.22.1`.
 
@@ -54,6 +55,25 @@ dotnet run --project MewUI.Themes.Islands.Demo -- \
 
 `--theme` accepts `system`, `light` or `dark`; `--page` accepts `overview`, `controls`,
 `lists & trees`, `dialogs & menus`, `window chrome` or `colors & metrics`.
+
+### Linux
+
+The demo registers X11 with the MewVG/OpenGL backend. Run it in an X11 desktop session,
+or through XWayland on a Wayland desktop; native Wayland is not supported by MewUI 0.22.1.
+The target needs the X11/OpenGL, Fontconfig, FreeType and HarfBuzz system libraries and suitable fonts.
+A self-contained publish includes .NET, but does not bundle those desktop libraries.
+
+On the target Linux desktop, the `dotnet run` command above uses its native architecture.
+Self-contained publishing still needs the desktop libraries listed above.
+
+In the current source, Linux/X11 keeps the system title bar
+because this backend does not implement extended client areas. The Islands strip shows only toolbar actions;
+dialogs with no actions omit the strip. This preserves the window manager's decorations and resize grips.
+The Linux demo has been tested with native window decorations. Enabling Islands also installs an X11
+popup workaround automatically, including for windows that do not use the custom chrome helpers:
+retry the dismiss watch after mapping and retire transient menus on WM grabs or owner geometry changes.
+Native-title-bar clicks and dragging with a dropdown open have been verified in the Linux demo.
+Linux NativeAOT runtime behavior has not been verified.
 
 ## Build, test and pack
 

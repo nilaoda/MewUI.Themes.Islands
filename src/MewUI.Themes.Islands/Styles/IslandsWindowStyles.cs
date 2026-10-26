@@ -1,6 +1,7 @@
 using Aprillz.MewUI;
 using Aprillz.MewUI.Controls;
 using MewUI.Themes.Islands.Theming;
+using MewUI.Themes.Islands.Windowing;
 
 namespace MewUI.Themes.Islands.Styles;
 
@@ -43,6 +44,7 @@ internal static class IslandsWindowStyles
                 IslandsStyles.Metric(TextElement.FontSizeProperty, t => t.Metrics.FontSize),
                 IslandsStyles.Metric(TextElement.FontWeightProperty, t => t.Metrics.FontWeight),
                 IslandsStyles.Metric(Control.PaddingProperty, t => t.Metrics.ContainerPadding),
+                IslandsStyles.Fixed(IslandsX11PopupDismissal.EnabledProperty, OperatingSystem.IsLinux()),
             ]);
 
     /// <summary>Islands's titled pane: the panel surface, an edge one step lighter than a component's, rounded like a component.</summary>

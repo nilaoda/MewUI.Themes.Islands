@@ -48,6 +48,8 @@ public static class IslandsWindowChromeExtensions
     /// <para>
     /// The top padding is dropped so the strip reaches the window's edge. The window's other insets are the
     /// theme's own container padding, so the window keeps exactly the breathing room it had.
+    /// On Linux/X11 without extended-client-area support, the native title bar remains; the strip shows
+    /// actions only and is hidden entirely when it has no actions, preserving native moving and resizing.
     /// </para>
     /// </remarks>
     public static IslandsWindowChrome IslandsFramelessChrome<TWindow>(this TWindow window)

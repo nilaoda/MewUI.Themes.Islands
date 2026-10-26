@@ -100,7 +100,7 @@ public class WindowChromeTests
         Assert.Equal(1, source.Split("foreach (TextBlock heading in _headings)").Length - 1);
 
         int register = source.IndexOf("_headings.Add(heading)", StringComparison.Ordinal);
-        int returned = source.IndexOf("return row.Children(tail)", StringComparison.Ordinal);
+        int returned = source.IndexOf("return new IslandsTitleBarLayout(", StringComparison.Ordinal);
 
         Assert.True(register < returned, "the heading is registered after its strip is handed back");
     }

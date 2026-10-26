@@ -12,6 +12,8 @@
 
   <ItemGroup>
     <PackageReference Include="xunit.v3" />
+    <!-- Exercise the real optional event contract; the library still depends only on Core. -->
+    <PackageReference Include="Aprillz.MewUI.Platform.X11" />
   </ItemGroup>
 
   <ItemGroup>

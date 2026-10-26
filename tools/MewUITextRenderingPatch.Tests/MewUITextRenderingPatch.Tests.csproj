@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
-    <IslandsPackageVersion Condition="'$(IslandsPackageVersion)' == ''">0.1.0-preview.4</IslandsPackageVersion>
+    <IslandsPackageVersion Condition="'$(IslandsPackageVersion)' == ''">0.1.0-preview.5</IslandsPackageVersion>
     <!-- Exercise the packaged targets and patched backend on any test host, without native windows. -->
     <IslandsWindowsTextRenderingWorkaround>true</IslandsWindowsTextRenderingWorkaround>
   </PropertyGroup>

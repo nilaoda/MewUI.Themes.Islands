@@ -10,9 +10,9 @@ and reusable workspace, menu and window components.
 
 ## Preview status and compatibility
 
-Version `0.1.0-preview.4` fixes unintended Windows window movement when clicking the title bar
-with a dropdown open. It also vertically centers title-bar controls, giving dropdowns and toolbar
-buttons balanced space above and below.
+Version `0.1.0-preview.5` retains the native Linux title bar without duplicate headings or caption
+buttons, and automatically corrects X11 popup dismissal on native title-bar interaction and owner
+geometry changes. Long title headings reserve toolbar space and trim before reaching the actions.
 Public APIs may change between preview releases.
 It is built and tested against MewUI `0.22.1`; later MewUI versions need separate verification,
 especially for window integration and dialog keyboard routing.
@@ -30,7 +30,7 @@ In a MewUI application:
 
 ```sh
 dotnet add package Aprillz.MewUI --version 0.22.1
-dotnet add package MewUI.Themes.Islands --version 0.1.0-preview.4
+dotnet add package MewUI.Themes.Islands --version 0.1.0-preview.5
 ```
 
 If the application already uses MewUI's individual platform/backend packages, keep that setup
@@ -192,7 +192,18 @@ filterLabel.Text = "Filter · 1";
 
 `window.IslandsFramelessChrome()` returns a chrome object whose `TitleBar(title, actions)` builds
 a draggable title strip. Titles default to centered alignment. macOS keeps native traffic-light
-buttons; Windows uses custom caption buttons with maximize/snap integration.
+buttons; Windows uses custom caption buttons with maximize/snap integration. Long headings are trimmed
+before they reach the toolbar actions, retaining centered alignment where space allows.
+
+Linux/X11 without extended-client-area support retains the system title bar. In that case the Islands strip
+contains only toolbar actions, has no drag/maximize gesture, and is hidden if there are no actions.
+The window manager keeps responsibility for moving, resizing and caption buttons. `TitleBar()` and
+`SetTitle()` update the native title as well.
+
+Installing the theme through `UseIslands()` / `IslandsTheme.Install()` also enables the Linux/X11 popup
+workaround automatically for all styled windows, including native popup surfaces. It retries the dismiss
+watch after mapping and dismisses transient popup chains on WM grabs or owner moves/resizes. Windows
+and macOS do not register this handler. The library continues to depend only on MewUI Core.
 
 `window.IslandsDialogChrome()` disables minimize and maximize before showing a modal dialog.
 Closing remains available, and resizing follows the window's size settings.
@@ -244,8 +255,9 @@ Building through a source `ProjectReference` does not import NuGet `buildTransit
 
 - Both target-framework assets are built and checked through an independent NuGet consumer.
 - Automated tests run on .NET 10 and cover palettes, style rules, components and window/input helpers.
-- Windows and macOS integration have been exercised in a consuming application. Linux/X11 has not
-  yet received the same manual validation.
+- Windows and macOS integration have been exercised in a consuming application. The Linux/X11
+  demo has been exercised with native title bars, including dropdown dismissal on title clicks and dragging.
+  Native Wayland and Linux NativeAOT runtime behavior have not been validated.
 - `IsAotCompatible` enables trimming and AOT analyzers. It is not a guarantee for every platform/RID;
   validate the host application's NativeAOT publish and runtime behavior on each intended target.
 

@@ -13,8 +13,8 @@ internal static class OverviewPage
             new Grid().Columns(GridLength.Star, GridLength.Auto).Spacing(24).Children(
                 new StackPanel().Vertical().Spacing(10).Children(
                     new TextBlock().Text("Islands for MewUI").IslandsTitle(),
-                    new TextBlock().Text("JetBrains' New UI look as a MewUI theme: surfaces, typography, controls and window chrome.").IslandsHint(),
-                    new StackPanel().Horizontal().Spacing(8).Children(
+                    new TextBlock().Text("JetBrains' New UI look as a MewUI theme: surfaces, typography, controls and window chrome.").IslandsHint().TextWrapping(TextWrapping.Wrap),
+                    new WrapPanel().Horizontal().Spacing(8).Children(
                         Action("Primary action", primary: true, host),
                         Action("Secondary action", primary: false, host),
                         Flat("Flat action", host))).GridPosition(0, 0),
@@ -38,7 +38,7 @@ internal static class OverviewPage
 
         var product = IslandsProductInfo.Entry(
             "Islands Theme",
-            "0.1.0",
+            DemoInfo.Version,
             "MewUI theme gallery",
             () => host.SetStatus("MewUI.Themes.Islands · MIT"));
 

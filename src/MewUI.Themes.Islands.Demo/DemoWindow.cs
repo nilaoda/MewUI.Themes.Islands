@@ -171,7 +171,7 @@ internal sealed class DemoWindow : Window
 
         var product = IslandsProductInfo.Entry(
             "Islands Theme",
-            "0.1.0",
+            DemoInfo.Version,
             "MewUI theme gallery",
             () => SetStatus("MewUI.Themes.Islands · MIT"));
 
