@@ -313,8 +313,8 @@ public sealed class IslandsRowList
             Plate.Background(_owner._selected.Contains(Item)
                 ? colors.Selection
                 : ReferenceEquals(this, _owner._hovered)
-                    ? colors.HoverBackground
-                    : colors.HoverBackground.WithAlpha(0));
+                    ? colors.RowHover
+                    : colors.RowHover.WithAlpha(0));
         }
     }
 }

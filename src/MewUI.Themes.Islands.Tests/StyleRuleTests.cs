@@ -332,6 +332,13 @@ public class StyleRuleTests
         Assert.Equal(expected, Assert.IsType<T>(setter.Value));
     }
 
+    [Fact]
+    public void The_progress_bar_has_a_four_dip_stripe()
+    {
+        Style progress = Registered().GetByType(typeof(ProgressBar))!;
+        AssertSetterValue(progress, FrameworkElement.HeightProperty, 4.0);
+    }
+
     private static void AssertArcIsThemeResolved(Style style, string what)
     {
         SetterBase setter = Assert.Single(
@@ -620,24 +627,30 @@ public class StyleRuleTests
         Assert.Contains(style.Setters, setter => ReferenceEquals(setter.Property, FrameworkElement.MinWidthProperty));
     }
 
-    /// <summary>
-    /// The tree and the context menus draw the same selection plate height, so one selected row and one
-    /// selected menu item are indistinguishable in height wherever they appear.
-    /// </summary>
-    [Fact]
-    public void A_tree_and_a_menu_share_one_row_height()
+    [Theory]
+    [InlineData(false, 24, 12, 4)]
+    [InlineData(true, 22, 8, 2)]
+    public void Lists_and_trees_use_the_row_height_and_insets_for_the_density(
+        bool compact, double rowHeight, double treeHorizontalInset, double treeVerticalInset)
     {
-        StyleSheet sheet = Registered();
-        Style tree = sheet.GetByType(typeof(TreeView))!;
-        Style menu = sheet.GetByType(typeof(ContextMenu))!;
+        var previousDensity = IslandsMetrics.Density;
+        IslandsMetrics.UseDensity(compact ? IslandsDensity.Compact : IslandsDensity.Regular);
+        try
+        {
+            StyleSheet sheet = Registered();
+            Style tree = sheet.GetByType(typeof(TreeView))!;
+            Style list = sheet.GetByType(typeof(ListBox))!;
 
-        Assert.Equal(
-            IslandsMetrics.NavigationRowHeight,
-            tree.Setters.Last(setter => ReferenceEquals(setter.Property, TreeView.ItemHeightProperty)).Value);
-        Assert.Equal(
-            IslandsMetrics.NavigationRowHeight,
-            menu.Setters.Last(setter => ReferenceEquals(setter.Property, ContextMenu.ItemHeightProperty)).Value);
-        Assert.Equal(30, IslandsMetrics.NavigationRowHeight);
+            AssertSetterValue(tree, TreeView.ItemHeightProperty, rowHeight);
+            AssertSetterValue(tree, Control.PaddingProperty,
+                new Thickness(treeHorizontalInset, treeVerticalInset, treeHorizontalInset, treeVerticalInset));
+            AssertSetterValue(list, ListBox.ItemHeightProperty, rowHeight);
+            AssertSetterValue(list, Control.PaddingProperty, new Thickness(0, 4, 0, 4));
+        }
+        finally
+        {
+            IslandsMetrics.UseDensity(previousDensity);
+        }
     }
 
     /// <summary>
@@ -650,6 +663,7 @@ public class StyleRuleTests
         StyleSheet sheet = Registered();
         Style menu = sheet.GetByType(typeof(ContextMenu))!;
 
+        AssertSetterValue(menu, ContextMenu.ItemHeightProperty, 30.0);
         Assert.Equal(
             new Thickness(4),
             menu.Setters.Last(setter => ReferenceEquals(setter.Property, Control.PaddingProperty)).Value);

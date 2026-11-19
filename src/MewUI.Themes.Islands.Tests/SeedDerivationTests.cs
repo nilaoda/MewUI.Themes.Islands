@@ -57,10 +57,19 @@ public class SeedDerivationTests
         {
             AssertChannelClose(palette.WindowBackground, colors.PanelBackground, 3, nameof(palette.WindowBackground));
             AssertChannelClose(palette.ControlBackground, colors.ComponentBackground, 3, "ControlBackground");
-            Assert.Equal(colors.ButtonBackground, palette.ButtonFace);
             Assert.Equal(colors.ButtonDisabledBackground, palette.ButtonDisabledBackground);
             Assert.Equal(colors.Error, palette.Error);
         });
+    }
+
+    [Fact]
+    public void Framework_button_face_composites_the_button_over_the_panel()
+    {
+        Assert.Equal(IslandsColors.Light.ButtonBackground, PaletteFor(IslandsColors.Light).ButtonFace);
+
+        var customDark = IslandsColors.Dark with { PanelBackground = Color.FromHex("#2e3440") };
+        Assert.Equal(0, customDark.ButtonBackground.A);
+        Assert.Equal(customDark.PanelBackground, PaletteFor(customDark).ButtonFace);
     }
 
     /// <summary>

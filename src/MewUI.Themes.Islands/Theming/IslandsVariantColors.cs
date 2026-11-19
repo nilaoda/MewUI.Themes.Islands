@@ -8,9 +8,8 @@ namespace MewUI.Themes.Islands.Theming;
 /// Fields also include documented MewUI-specific values and platform caption colors.
 /// </summary>
 /// <remarks>
-/// The record is <c>required</c>-initialized on purpose: a variant that forgets a color does not
-/// compile, so a custom palette (Nord, Cobalt, …) cannot silently fall back to transparent black.
-/// Derive a variant with <c>with</c> to reuse the whole style layer for another color table.
+/// The base colors are required. Optional component colors fall back to the shared color documented
+/// on each property. Derive a variant with <c>with</c> to reuse the style layer for another color table.
 /// </remarks>
 public sealed record IslandsVariantColors
 {
@@ -19,8 +18,11 @@ public sealed record IslandsVariantColors
     /// <summary><c>Panel.background</c>: the flat window/panel surface.</summary>
     public required Color PanelBackground { get; init; }
 
-    /// <summary><c>TextField.background</c> / <c>@componentBackground</c>: inputs, lists, grids.</summary>
+    /// <summary>The shared surface for islands and content controls.</summary>
     public required Color ComponentBackground { get; init; }
+
+    /// <summary><c>TextField.background</c>. Defaults to <see cref="ComponentBackground"/>.</summary>
+    public Color? TextFieldBackground { get; init; }
 
     /// <summary><c>PopupMenu.background</c>: menus, popups, combo boxes dropdowns.</summary>
     public required Color MenuBackground { get; init; }
@@ -33,6 +35,9 @@ public sealed record IslandsVariantColors
 
     /// <summary><c>ToolTip.background</c>.</summary>
     public required Color ToolTipBackground { get; init; }
+
+    /// <summary><c>ToolTip.borderColor</c>. Defaults to <see cref="MenuBorder"/>.</summary>
+    public Color? ToolTipBorder { get; init; }
 
     /// <summary><c>ToolTip.foreground</c>.</summary>
     public required Color ToolTipForeground { get; init; }
@@ -157,6 +162,11 @@ public sealed record IslandsVariantColors
 
     /// <summary><c>MenuBar.hoverBackground</c>: the row hover tint used by menus and toolbars.</summary>
     public required Color HoverBackground { get; init; }
+
+    /// <summary><c>selection-bg-hovered</c> for list, tree and table rows. Defaults to <see cref="HoverBackground"/>.</summary>
+    public Color? RowHoverBackground { get; init; }
+
+    internal Color RowHover => RowHoverBackground ?? HoverBackground;
 
     // ---- Buttons ----------------------------------------------------------------------
 
@@ -289,13 +299,16 @@ public sealed record IslandsVariantColors
 
     // ---- Sliders ----------------------------------------------------------------------
 
-    /// <summary><c>Slider.thumbColor</c> / <c>Slider.trackValueColor</c>.</summary>
+    /// <summary><c>Slider.buttonColor</c>: the thumb fill.</summary>
     public required Color SliderFill { get; init; }
 
-    /// <summary><c>Slider.hoverThumbColor</c>.</summary>
+    /// <summary>The thumb fill while pressed.</summary>
     public required Color SliderFillHover { get; init; }
 
-    /// <summary><c>Slider.trackColor</c>: the unfilled remainder of the groove.</summary>
+    /// <summary><c>Slider.buttonBorderColor</c>. Defaults to <see cref="Border"/>.</summary>
+    public Color? SliderThumbBorder { get; init; }
+
+    /// <summary><c>Slider.trackColor</c>: the track behind the value fill drawn by MewUI.</summary>
     public required Color SliderTrack { get; init; }
 
     // ---- Check boxes ------------------------------------------------------------------

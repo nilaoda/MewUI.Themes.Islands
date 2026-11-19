@@ -47,10 +47,8 @@ internal static class IslandsMenuStyles
     /// therefore paler than Islands'. No style key reaches it. See <c>docs/color-map.md</c>.
     /// </para>
     /// <para>
-    /// A menu row is Islands's own <c>List|Tree/rowHeight</c> (24) rather than the height MewUI derives from
-    /// the control height (26), because Islands states the two as separate keys. Its plate stays as round as
-    /// the menu's own corner minus the border — a menu is read by its silhouette, so unlike a drop-down's list
-    /// it keeps the radius the chrome blurs its shadow with.
+    /// Menu rows use the same height as the overlay context menu. Their radius follows the popup corner
+    /// minus its border. The popup uses the radius MewUI draws its shadow with.
     /// </para>
     /// </remarks>
     private static Style ContextMenuStyle() =>

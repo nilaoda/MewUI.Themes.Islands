@@ -58,16 +58,25 @@ public class ColorTableTests
         (IslandsColors.Light, nameof(IslandsVariantColors.TabSelectedInactiveBackground), "#e9eaee"),
         (IslandsColors.Light, nameof(IslandsVariantColors.TabSelectedInactiveBorder), "#d1d3d9"),
         (IslandsColors.Light, nameof(IslandsVariantColors.CheckFilledBackground), "#3871e1"),
-        (IslandsColors.Light, nameof(IslandsVariantColors.SliderFill), "#3871e1"),
+        (IslandsColors.Light, nameof(IslandsVariantColors.SliderFill), "#ffffff"),
+        (IslandsColors.Light, nameof(IslandsVariantColors.SliderThumbBorder), "#818594"),
         (IslandsColors.Light, nameof(IslandsVariantColors.ComboPopupBorder), "#b5b7bd"),
+        (IslandsColors.Light, nameof(IslandsVariantColors.ToolTipBackground), "#ffffff"),
+        (IslandsColors.Light, nameof(IslandsVariantColors.ToolTipBorder), "#d1d3d9"),
+        (IslandsColors.Light, nameof(IslandsVariantColors.ToolTipForeground), "#000000"),
 
         (IslandsColors.Dark, nameof(IslandsVariantColors.PanelBackground), "#191a1c"),
         (IslandsColors.Dark, nameof(IslandsVariantColors.ComponentBackground), "#26282c"),
+        (IslandsColors.Dark, nameof(IslandsVariantColors.TextFieldBackground), "#191a1c"),
         (IslandsColors.Dark, nameof(IslandsVariantColors.Border), "#40434a"),
         (IslandsColors.Dark, nameof(IslandsVariantColors.Accent), "#3871e1"),
         (IslandsColors.Dark, nameof(IslandsVariantColors.InactiveSelection), "#33353b"),
+        (IslandsColors.Dark, nameof(IslandsVariantColors.ToolTipBackground), "#33353b"),
+        (IslandsColors.Dark, nameof(IslandsVariantColors.ToolTipBorder), "#33353b"),
         (IslandsColors.Dark, nameof(IslandsVariantColors.ToolTipForeground), "#d1d3d9"),
         (IslandsColors.Dark, nameof(IslandsVariantColors.ProgressFill), "#3871e1"),
+        (IslandsColors.Dark, nameof(IslandsVariantColors.SliderFill), "#9da0a8"),
+        (IslandsColors.Dark, nameof(IslandsVariantColors.SliderThumbBorder), "#2b2d30"),
         (IslandsColors.Dark, nameof(IslandsVariantColors.TabSelectedBackground), "#233558"),
         (IslandsColors.Dark, nameof(IslandsVariantColors.TabSelectedBorder), "#2e4d89"),
         (IslandsColors.Dark, nameof(IslandsVariantColors.TabSelectedInactiveBackground), "#26282c"),
@@ -108,11 +117,9 @@ public class ColorTableTests
                 Color value = Read(colors, field.Name);
                 byte alpha = value.A;
 
-                // Islands paints hover and press as a translucent overlay over whatever surface they land
-                // on, and its scroll bar as a thumb over nothing; every other field is a surface of its own
-                // and has to be opaque, or a hand-written palette has forgotten a key.
                 bool overlay = Overlays.Contains(field.Name);
-                bool transparentByDesign = TransparentByDesign.Contains(field.Name);
+                bool transparentByDesign = TransparentByDesign.Contains(field.Name)
+                    || (variant == "dark" && field.Name == nameof(IslandsVariantColors.ButtonBackground));
 
                 if (transparentByDesign)
                 {
@@ -131,7 +138,7 @@ public class ColorTableTests
     }
 
     [Fact]
-    public void Every_field_is_a_required_init_only_member()
+    public void Every_base_color_is_a_required_init_only_member()
     {
         Assert.SkipWhen(LibrarySource.Root is null, "library sources are not next to the test output");
 
@@ -148,7 +155,7 @@ public class ColorTableTests
     /// to wire up or one that got wired up and left behind in the documentation.
     /// </summary>
     [Fact]
-    public void Every_field_is_applied_or_recorded_as_unreachable()
+    public void Every_base_color_is_applied_or_recorded_as_unreachable()
     {
         Assert.SkipWhen(LibrarySource.Root is null, "library sources are not next to the test output");
 
@@ -197,5 +204,16 @@ public class ColorTableTests
             .GetValue(colors)!;
 
     private static PropertyInfo[] Fields() =>
-        typeof(IslandsVariantColors).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+        typeof(IslandsVariantColors).GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            .Where(property => property.PropertyType == typeof(Color)).ToArray();
+
+    [Fact]
+    public void Row_hover_uses_the_selection_overlay_with_a_fallback_for_custom_palettes()
+    {
+        Assert.Equal(Color.FromHex("#000000").WithAlpha(0x08), IslandsColors.Light.RowHover);
+        Assert.Equal(Color.FromHex("#ffffff").WithAlpha(0x10), IslandsColors.Dark.RowHover);
+
+        var custom = IslandsColors.Dark with { RowHoverBackground = null };
+        Assert.Equal(custom.HoverBackground, custom.RowHover);
+    }
 }

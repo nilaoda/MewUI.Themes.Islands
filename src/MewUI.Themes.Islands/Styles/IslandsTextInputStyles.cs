@@ -12,8 +12,7 @@ internal static class IslandsTextInputStyles
 {
     internal static void Register(StyleSheet sheet)
     {
-        // One rule for the whole family: the sheet walks base types, so TextBase covers TextBox,
-        // PasswordBox, MultiLineTextBox and SyntaxViewer, which add no colors of their own in Islands.
+        // The sheet walks base types, so TextBase covers TextBox, PasswordBox and MultiLineTextBox.
         sheet.Define<TextBase>(TextInputStyle(TextBaseFaceSetters()));
         sheet.Define<NumericUpDown>(NumericUpDownStyle());
         sheet.Define<CheckBox>(CheckLikeStyle<CheckBox>(CheckBoxFaceSetters(), CheckBoxTriggers()));
@@ -26,7 +25,7 @@ internal static class IslandsTextInputStyles
     /// <summary>The Islands component: a flat field, one pixel of grey edge, the focus color on the edge when active.</summary>
     private static SetterBase[] TextBaseFaceSetters() =>
     [
-        IslandsStyles.Background(c => c.ComponentBackground),
+        IslandsStyles.Background(c => c.TextFieldBackground ?? c.ComponentBackground),
         IslandsStyles.BorderBrush(c => c.Border),
         IslandsStyles.Foreground(c => c.Text),
         IslandsStyles.Fixed(Control.PaddingProperty, IslandsMetrics.ComponentPadding),

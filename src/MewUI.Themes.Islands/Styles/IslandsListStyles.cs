@@ -26,6 +26,7 @@ internal static class IslandsListStyles
             Style.DeriveFromDefault<ListBox>(
                 [
                     .. ItemViewSetters(),
+                    IslandsStyles.Fixed(Control.PaddingProperty, IslandsMetrics.ListContentPadding),
                     IslandsStyles.Fixed(ListBox.ZebraStripingProperty, false),
                     IslandsStyles.Fixed(ListBox.ItemHeightProperty, IslandsMetrics.ListRowHeight),
                 ],
@@ -86,9 +87,9 @@ internal static class IslandsListStyles
     /// </remarks>
     private static Style RowStyle() =>
         Style.DeriveFromDefault<ItemContainer>(
-            [IslandsStyles.Background(c => c.ComponentBackground.WithAlpha(0))],
+            [IslandsStyles.Background(c => c.RowHover.WithAlpha(0))],
             [
-                IslandsStyles.When(VisualStateFlags.Hot, IslandsStyles.Background(c => c.HoverBackground)),
+                IslandsStyles.When(VisualStateFlags.Hot, IslandsStyles.Background(c => c.RowHover)),
                 IslandsStyles.When(VisualStateFlags.Selected,
                     IslandsStyles.SelectionPlate(),
                     IslandsStyles.SelectionTextLabel()),

@@ -45,7 +45,7 @@ thumb is the same idea: a translucent grey capsule over nothing, with a fully tr
 
 | Field | Token | Light | Dark |
 | --- | --- | --- | --- |
-| `Accent`, `PrimaryButtonBackground`, `ProgressFill`, `SliderFill` | `accent-brand-bg` | `#3871e1` | `#3871e1` |
+| `Accent`, `PrimaryButtonBackground`, `ProgressFill` | `accent-brand-bg` | `#3871e1` | `#3871e1` |
 | `Selection`, `ButtonSelected`, `MenuCheckBackground`, `TabFocusBackground` | `blue-140` / `blue-50` | `#d0dffe` | `#2a4371` |
 | `InactiveSelection` | `*/selectionInactiveBackground` (`gray-150` / `gray-40`) | `#e9eaee` | `#33353b` |
 | `TabSelectedBackground` | `EditorTabs/underlinedTabBackground` = `tab-selected-bg-active` | `#e3ebfe` | `#233558` |
@@ -60,19 +60,24 @@ thumb is the same idea: a translucent grey capsule over nothing, with a fully tr
 | Area | Field ← token | Note |
 | --- | --- | --- |
 | Field and button edge | `Border` ← `Button/startBorderColor` (`gray-130` / `gray-50`) | `BorderFocused` and `FocusRing` are `accent-brand-border` |
-| Button face | `ButtonBackground` ← `dialog-bg-inline` / the transparent `Button/endBackground` | In dark a button has no fill of its own and shows the layer under it |
+| Button face | `ButtonBackground` ← `dialog-bg-inline` / the transparent `Button/endBackground` | Dark buttons show the underlying surface. MewUI's `ButtonFace` seed is composited over the panel for grid headers and color-picker popups. |
 | Button states | `ButtonHover`, `ButtonPressed`, `ToolbarHover`, `ToolbarPressed` ← `core-bg-transparent-*` | Overlays, alpha kept |
 | Primary button | `PrimaryButton*` ← `Button/default/*` | `accent-brand-bg` with `text-over-accent` on it |
-| Input | `ComponentBackground` ← `dialog-bg-inline` / `layer-1-bg` | Islands also raises `ComboBox/nonEditableBackground` one step (`gray-30`) |
+| Input | `TextFieldBackground` ← `control-bg` | White in light (`#ffffff`), recessed in dark (`#191a1c`). The non-editable combo box keeps the raised content surface (`#26282c` in dark). |
 | Tabs | `TabSelectedBackground` ← `tab-selected-bg-active`, `TabSelectedBorder` ← `tab-selected-border-active`, `TabHoverBackground` ← `tab-bg-hovered`; the plate is rounded by `TabbedPane.tabSelectionArc` (4) | `TabSelectedInactiveBackground` / `TabSelectedInactiveBorder` ← the `inactive*` pair, for a strip in a window without the focus |
-| Rows | `HoverBackground` ← `*/hoverBackground`; `Selection` ← `*/selectionBackground` | `IslandsRowList` applies both directly; framework lists still derive their selection from the palette |
+| Rows | `RowHoverBackground` ← `selection-bg-hovered`, `Selection` ← `*/selectionBackground` | Lists, trees, grids and `IslandsRowList` share the row hover overlay. Framework lists derive their selected fill from the palette. |
 | Toolbar / menu icons | `Icon` ← `text-secondary`; `AccentText` over primary actions | Shared `IslandsIcon` geometry, colored at paint time |
 | Grid | `GridLine` ← `Table/gridColor` | `layer-1-border-inline` / `layer-0-border` |
 | Menu / popup | `MenuBackground` ← `Menu/background`, `MenuBorder` ← `Popup/borderColor` | A drop-down's list takes `ComboPopupBorder` instead; see below |
 | Drop-down list | `ComboPopupBorder` ← `ComboPopup/border` | The one color the theme files state as a literal hex rather than as a token: `1,1,1,1,#4C4F56` dark, `1,1,1,1,#B5B7BD` light (light states it under `os.windows` only) |
-| Tool tip | `ToolTipBackground` ← the dark chip Islands uses in both variants | |
+| Tooltip | `ToolTipBackground` ← `feedback-bg`, `ToolTipBorder` ← `feedback-border` (light) / `feedback-bg` (dark), `ToolTipForeground` ← `text-default` | The light chip is white with a gray edge. The dark chip uses `#33353b` for both its fill and its edge. |
+| Range controls | `SliderFill` ← `Slider.buttonColor`, `SliderThumbBorder` ← `Slider.buttonBorderColor`, `ProgressTrack` ← `control-bg-small` | MewUI draws the slider's filled track with the accent. The progress bar uses the 4 DIP stripe from `DarculaProgressBarUI`. |
 | Check / radio | `CheckFilledBackground` and `CheckSelectedBorder` ← the accent; `CheckBorder` ← the icon's own stroke (`gray-120` / `gray-70`) | The mark's geometry comes from the icon, see `IslandsToggleIndicator` |
 | Scroll bar | `ScrollThumb*` ← `ScrollBar/thumbColor` (35% / 55% / 75% grey); `ScrollTrack` ← `ScrollBar/trackColor`, fully transparent | |
+
+Copying a palette variant with `with` also copies its component-specific colors. Set an optional
+color to `null` to use its shared fallback. For example, `RowHoverBackground = null` lets
+`HoverBackground` drive the row tint in a custom variant.
 
 ## Deviations
 
@@ -88,10 +93,10 @@ thumb is the same idea: a translucent grey capsule over nothing, with a fully tr
 - **A row is 24 DIP, and so is a grid's.** MewUI derives a row from `BaseControlHeight`
   (`Max(18, height - 2)` = 26) because it ties rows and controls to the one number and Islands does not, and
   it derives a *grid* row as `Max(BaseControlHeight, 24)` = 28. Every rule that owns a row control states
-  `List|Tree/rowHeight` itself, so a list, a tree, a menu, a grid and a drop-down's list all land on 24 (22
-  under `IslandsDensity.Compact`). Islands states no `Table.rowHeight`: the SDK's table reference images
-  measure the old New UI's 22, and the table takes Islands's own row rhythm instead, which is the one it is
-  read against beside the tree.
+  `List|Tree/rowHeight` itself, so a list, a tree, a grid and a drop-down's list all land on 24 (22
+  under `IslandsDensity.Compact`). Lists use `List.border` for the 4 DIP vertical inset. Trees use
+  `Tree.border` or `Tree.border.compact` for their insets. Framework and overlay context menus share a
+  30 DIP row height.
 - **A table cell keeps more air than `Table.cellMargins` states.** The token is `2,3,2,3`, and a faithful
   reading leaves two or three DIP on every side; at that inset an identifier or a code sits against the column
   line. `IslandsMetrics.GridCellPadding` keeps the token's 2 vertical and widens the horizontal to 8, which
@@ -123,10 +128,9 @@ thumb is the same idea: a translucent grey capsule over nothing, with a fully tr
   which reads its radius from the metrics record and nothing else, keeps 8. The disagreement sits on a blurred
   edge. The same coupling is why a menu's rows stay rounder than a drop-down's: a menu is read by its own
   silhouette, so it keeps the shadow's radius and its rows take 7.
-- **A tool tip is rounded by Islands's own key, not by its shadow.** `ToolTip.borderCornerRadius` is 6 (8 for
+- **A tooltip uses the 6 DIP radius.** `ToolTip.borderCornerRadius` is 6 (8 for
   a tip that wraps); MewUI gives a tool tip a single corner and blurs its shadow with the metrics radius, so
-  the tip sits two DIP off it. Its edge is still `Popup/borderColor`; Islands paints it in the chip's own
-  color (`ToolTip.borderColor` = `feedback-bg`), which is to say with no visible edge at all.
+  the tip and its shadow can have different radii.
 - **The arrow column is 22 in the framework and 28 in Islands** (`Component/arrowAreaWidth`), and the
   framework strokes the chevron in the label's foreground where Islands uses its arrow token:
   `FlatDropDownArrow`-style overdrawing, see `IslandsDropDownArrow`.

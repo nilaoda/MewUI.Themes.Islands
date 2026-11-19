@@ -35,9 +35,10 @@ internal static class IslandsColors
         ToolBarBackground = Color.FromHex("#f7f8f9"),
         // ScrollBar/trackColor is fully transparent: Islands draws a thumb over nothing.
         ScrollTrackBackground = Color.FromHex("#000000").WithAlpha(0),
-        // ToolTip is a dark chip in both variants.
-        ToolTipBackground = Color.FromHex("#191a1c"),
-        ToolTipForeground = Color.FromHex("#ffffff"),
+        // ToolTip: feedback-bg, feedback-border and text-default.
+        ToolTipBackground = Color.FromHex("#ffffff"),
+        ToolTipBorder = Color.FromHex("#d1d3d9"),
+        ToolTipForeground = Color.FromHex("#000000"),
 
         Text = Color.FromHex("#000000"),
         // text-secondary is the same gray in both variants; only the text around it moves.
@@ -80,6 +81,8 @@ internal static class IslandsColors
         InactiveSelectionText = Color.FromHex("#000000"),
         // */hoverBackground = core-bg-transparent-hovered: 7% black over the surface.
         HoverBackground = Color.FromHex("#000000").WithAlpha(0x12),
+        // List, Tree and Table override the generic hover color with selection-bg-hovered.
+        RowHoverBackground = Color.FromHex("#000000").WithAlpha(0x08),
 
         ButtonBackground = Color.FromHex("#ffffff"),
         ButtonForeground = Color.FromHex("#000000"),
@@ -131,8 +134,10 @@ internal static class IslandsColors
         ProgressText = Color.FromHex("#000000"),
         ProgressTextOnFill = Color.FromHex("#ffffff"),
 
-        SliderFill = Color.FromHex("#3871e1"),
-        SliderFillHover = Color.FromHex("#538af9"),
+        // The light Slider.buttonColor uses DarculaSliderUI's white default.
+        SliderFill = Color.FromHex("#ffffff"),
+        SliderFillHover = Color.FromHex("#ffffff"),
+        SliderThumbBorder = Color.FromHex("#818594"),
         SliderTrack = Color.FromHex("#c9ccd6"),
 
         // The check mark is an icon, not a color: a 16 DIP box with a grey edge which fills with the accent
@@ -161,10 +166,14 @@ internal static class IslandsColors
         PanelBackground = Color.FromHex("#191a1c"),
         // ComboBox/background = layer-1-bg.
         ComponentBackground = Color.FromHex("#26282c"),
+        // TextField/background = control-bg = dialog-bg.
+        TextFieldBackground = Color.FromHex("#191a1c"),
         MenuBackground = Color.FromHex("#26282c"),
         ToolBarBackground = Color.FromHex("#191a1c"),
         ScrollTrackBackground = Color.FromHex("#000000").WithAlpha(0),
-        ToolTipBackground = Color.FromHex("#26282c"),
+        // The dark tooltip uses feedback-bg for both its face and its edge.
+        ToolTipBackground = Color.FromHex("#33353b"),
+        ToolTipBorder = Color.FromHex("#33353b"),
         ToolTipForeground = Color.FromHex("#d1d3d9"),
 
         Text = Color.FromHex("#d1d3d9"),
@@ -201,9 +210,10 @@ internal static class IslandsColors
         InactiveSelectionText = Color.FromHex("#d1d3d9"),
         // core-bg-transparent-hovered: 9% white over the surface.
         HoverBackground = Color.FromHex("#ffffff").WithAlpha(0x17),
+        RowHoverBackground = Color.FromHex("#ffffff").WithAlpha(0x10),
 
-        // Button/endBackground is fully transparent dark: a button shows the layer it sits on.
-        ButtonBackground = Color.FromHex("#191a1c"),
+        // Button/endBackground is transparent. Match the overlay hue for the alpha transition.
+        ButtonBackground = Color.Transparent,
         ButtonForeground = Color.FromHex("#d1d3d9"),
         ButtonBorder = Color.FromHex("#40434a"),
         ButtonHover = Color.FromHex("#ffffff").WithAlpha(0x17),
@@ -247,8 +257,9 @@ internal static class IslandsColors
         ProgressText = Color.FromHex("#d1d3d9"),
         ProgressTextOnFill = Color.FromHex("#ffffff"),
 
-        SliderFill = Color.FromHex("#3871e1"),
-        SliderFillHover = Color.FromHex("#538af9"),
+        SliderFill = Color.FromHex("#9da0a8"),
+        SliderFillHover = Color.FromHex("#9da0a8"),
+        SliderThumbBorder = Color.FromHex("#2b2d30"),
         SliderTrack = Color.FromHex("#5a5d63"),
 
         // The icon strokes its box in gray-70 on the dark ramp.

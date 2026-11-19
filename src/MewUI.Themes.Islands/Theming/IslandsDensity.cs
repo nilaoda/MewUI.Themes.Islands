@@ -32,10 +32,10 @@ public sealed record IslandsDensity
     /// <summary><c>List.cellMargins</c>: the gap between a row's content and its edge.</summary>
     public required Thickness RowPadding { get; init; }
 
-    /// <summary>
-    /// <c>List|Tree/rowHeight</c>: what a list, tree, menu or drop-down row is tall. Islands states no table
-    /// row height, so a grid keeps the framework's own derivation.
-    /// </summary>
+    /// <summary><c>Tree.border</c>: the inset around tree rows.</summary>
+    public Thickness TreeContentPadding { get; init; } = new(12, 4, 12, 4);
+
+    /// <summary><c>List|Tree/rowHeight</c>: the height for lists, trees, grids and drop-down lists.</summary>
     /// <remarks>
     /// MewUI derives a row from the control height (<c>Max(18, BaseControlHeight - 2)</c>), which is Islands's
     /// own 28 and therefore lands on 26; Islands states the two numbers separately. A rule that owns a row
@@ -123,6 +123,7 @@ public sealed record IslandsDensity
         ComponentPadding = new Thickness(6, 1, 6, 1),
         ButtonPadding = new Thickness(12, 1, 12, 1),
         RowPadding = new Thickness(4, 0, 4, 0),
+        TreeContentPadding = new Thickness(8, 2, 8, 2),
         ListRowHeight = 22,
         TabPadding = new Thickness(6, 0, 6, 0),
         TabHeight = 36,

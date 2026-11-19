@@ -25,19 +25,13 @@ public static class IslandsMetrics
     /// </remarks>
     public static Thickness MenuItemPadding { get; } = new(14, 5, 20, 5);
 
-    /// <summary>
-    /// The row height shared by the navigation tree and context menus, so a selected row and a selected
-    /// menu item draw the same plate height.
-    /// </summary>
+    /// <summary>The 30 DIP row height shared by the framework and overlay context menus.</summary>
     public const double NavigationRowHeight = 30;
 
     /// <summary><c>List.cellMargins</c> = <c>1,6,1,6</c>: rows are tighter than a standalone component.</summary>
     public static Thickness RowPadding => Density.RowPadding;
 
-    /// <summary>
-    /// <c>List|Tree/rowHeight</c> = 24 (compact 22): a list, tree, menu or drop-down row. Islands states no
-    /// table row height, so a grid keeps the framework's own derivation (28).
-    /// </summary>
+    /// <summary><c>List|Tree/rowHeight</c> = 24 (compact 22). Grids and drop-down lists share this height.</summary>
     /// <remarks>
     /// MewUI derives a row from <c>BaseControlHeight</c> — <c>Max(18, height - 2)</c>, which is 26 against
     /// Islands's 28 DIP control — and the two numbers are separate keys in Islands, so a rule that owns a row
@@ -59,8 +53,11 @@ public static class IslandsMetrics
     /// </remarks>
     public static Thickness PopupContentPadding { get; } = new(8, 4, 8, 4);
 
-    /// <summary><c>Tree.border</c> = <c>4,12,4,12</c>, in MewUI's left/top/right/bottom order.</summary>
-    public static Thickness TreeContentPadding { get; } = new(12, 4, 12, 4);
+    /// <summary><c>List.border</c> = <c>4,0,4,0</c>, in Java insets order.</summary>
+    internal static Thickness ListContentPadding { get; } = new(0, 4, 0, 4);
+
+    /// <summary><c>Tree.border</c> or <c>Tree.border.compact</c>, in MewUI's left/top/right/bottom order.</summary>
+    public static Thickness TreeContentPadding => Density.TreeContentPadding;
 
     /// <summary>
     /// The inset of a window's bottom action strip. One value for every dialog: the button row should land
@@ -297,7 +294,7 @@ public static class IslandsMetrics
     /// <summary><c>TableHeader.height</c>.</summary>
     public const double GridHeaderHeight = 25;
 
-    /// <summary><c>ProgressBar.horizontalSize</c> = <c>146,4</c>: the bar's height.</summary>
+    /// <summary>The 4 DIP default stripe width in DarculaProgressBarUI.</summary>
     public const double ProgressBarThickness = 4;
 
     /// <summary><c>Slider.thumbSize</c> = <c>12,12</c>.</summary>

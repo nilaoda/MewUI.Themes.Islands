@@ -87,20 +87,17 @@ internal static class IslandsWindowStyles
             ]);
 
     /// <summary>
-    /// <c>ToolTip.background</c> is a dark chip in both variants, <c>ToolTip.foreground</c> is the body text,
-    /// and <c>ToolTip.borderCornerRadius</c> is the one popup radius Islands states outright.
+    /// A tooltip uses the feedback surface, body text and a 6 DIP corner.
     /// </summary>
     /// <remarks>
     /// The chip's corner is Islands's 6 rather than the radius the chrome blurs the drop shadow with; the
-    /// two pixels of disagreement sit on a blurred edge and are recorded in <c>docs/color-map.md</c>, together
-    /// with the edge itself, which Islands paints in the chip's own color (<c>ToolTip.borderColor</c> =
-    /// <c>feedback-bg</c>) and this round leaves alone.
+    /// two pixels of disagreement sit on a blurred edge and are recorded in <c>docs/color-map.md</c>.
     /// </remarks>
     private static Style ToolTipStyle() =>
         Style.DeriveFromDefault<ToolTip>(
             [
                 IslandsStyles.Background(c => c.ToolTipBackground),
-                IslandsStyles.BorderBrush(c => c.MenuBorder),
+                IslandsStyles.BorderBrush(c => c.ToolTipBorder ?? c.MenuBorder),
                 IslandsStyles.Foreground(c => c.ToolTipForeground),
                 IslandsStyles.Fixed(Control.CornerRadiusProperty, IslandsMetrics.ToolTipArc),
                 IslandsStyles.Metric(Control.BorderThicknessProperty, t => t.Metrics.ControlBorderThickness),
@@ -144,18 +141,19 @@ internal static class IslandsWindowStyles
             ]);
 
     /// <summary>
-    /// The groove is the control's fill and the knob is its thumb brush; the value half of the groove is
-    /// painted from <c>Palette.Accent</c>, which Islands only agrees with in the light variant.
+    /// The track and thumb use separate brushes. MewUI paints the value fill using <c>Palette.Accent</c>.
     /// </summary>
     private static Style SliderStyle() =>
         Style.DeriveFromDefault<Slider>(
             [
                 IslandsStyles.Background(c => c.SliderTrack),
-                IslandsStyles.Fixed(Control.BorderThicknessProperty, 0.0),
+                IslandsStyles.BorderBrush(c => c.SliderTrack.WithAlpha(0)),
+                // Slider uses the control's border thickness for the thumb stroke.
+                IslandsStyles.Metric(Control.BorderThicknessProperty, t => t.Metrics.ControlBorderThickness),
                 IslandsStyles.Fixed(Control.CornerRadiusProperty, IslandsMetrics.SmallArc),
                 IslandsStyles.Foreground(c => c.Text),
                 SliderThumb(Slider.ThumbBrushProperty, c => c.SliderFill),
-                SliderThumb(Slider.ThumbBorderBrushProperty, c => c.Border),
+                SliderThumb(Slider.ThumbBorderBrushProperty, c => c.SliderThumbBorder ?? c.Border),
             ],
             [
                 IslandsStyles.When(VisualStateFlags.Hot,
@@ -176,14 +174,14 @@ internal static class IslandsWindowStyles
         IslandsStyles.From(property, select);
 
     /// <remarks>
-    /// The bar's height and arc come from MewUI's own defaults, which already land on Islands's; the fill
-    /// itself is <c>Palette.Accent</c>, so <c>ProgressFill</c> only reaches the track and the label.
+    /// Uses the 4 DIP stripe from DarculaProgressBarUI. MewUI paints the fill using <c>Palette.Accent</c>.
     /// </remarks>
     private static Style ProgressBarStyle() =>
         Style.DeriveFromDefault<ProgressBar>(
             [
                 IslandsStyles.Background(c => c.ProgressTrack),
                 IslandsStyles.Foreground(c => c.ProgressText),
+                IslandsStyles.Fixed(FrameworkElement.HeightProperty, IslandsMetrics.ProgressBarThickness),
                 IslandsStyles.Fixed(Control.BorderThicknessProperty, 0.0),
                 IslandsStyles.Fixed(Control.CornerRadiusProperty, IslandsMetrics.SmallArc),
             ]);

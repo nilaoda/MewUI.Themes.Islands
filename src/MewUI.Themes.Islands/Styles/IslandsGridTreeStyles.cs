@@ -53,12 +53,12 @@ internal static class IslandsGridTreeStyles
     private static Style GridRowStyle() =>
         Style.DeriveFromDefault<GridViewRow>(
             [
-                IslandsStyles.Background(c => c.ComponentBackground.WithAlpha(0)),
+                IslandsStyles.Background(c => c.RowHover.WithAlpha(0)),
                 // The framework insets the row's arc from the metric; Islands's Table.selectionArc is 0.
                 IslandsStyles.Fixed(Control.CornerRadiusProperty, 0.0),
             ],
             [
-                IslandsStyles.When(VisualStateFlags.Hot, IslandsStyles.Background(c => c.HoverBackground)),
+                IslandsStyles.When(VisualStateFlags.Hot, IslandsStyles.Background(c => c.RowHover)),
                 IslandsStyles.When(VisualStateFlags.Selected,
                     IslandsStyles.SelectionPlate(),
                     IslandsStyles.SelectionTextLabel()),
@@ -74,10 +74,9 @@ internal static class IslandsGridTreeStyles
         Style.DeriveFromDefault<TreeView>(
             [
                 .. IslandsListStyles.ItemViewSetters(),
-                // Tree.border = 4,12,4,12: a tree insets its rows twelve where a list insets eight.
                 IslandsStyles.Fixed(Control.PaddingProperty, IslandsMetrics.TreeContentPadding),
                 IslandsStyles.Fixed(TreeView.ItemPaddingProperty, IslandsMetrics.RowPadding),
-                IslandsStyles.Fixed(TreeView.ItemHeightProperty, IslandsMetrics.NavigationRowHeight),
+                IslandsStyles.Fixed(TreeView.ItemHeightProperty, IslandsMetrics.ListRowHeight),
                 IslandsStyles.Fixed(TreeView.IndentProperty, 18.0),
                 // MewUI derives every row's corner radius from the control's own CornerRadius, and
                 // ItemViewSetters squares the plate for lists — which squared the tree's selection too.
