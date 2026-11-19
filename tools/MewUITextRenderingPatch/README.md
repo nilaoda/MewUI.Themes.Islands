@@ -26,18 +26,32 @@ and optimized afterward to keep branch offsets valid.
 
 ## Verification
 
-Pack to a local NuGet source, then restore these tests against that source using an isolated
-package cache (to avoid a stale copy of an unpublished package with the same version):
+Pack to a local NuGet source with a local-only version and use a fresh package cache for each run.
+The following commands run from the repository root:
 
 ```sh
-dotnet pack src/MewUI.Themes.Islands -c Release -o /tmp/islands-feed
-dotnet restore tools/MewUITextRenderingPatch.Tests --packages /tmp/islands-test-packages \
-  --source /tmp/islands-feed --source https://api.nuget.org/v3/index.json
-dotnet run --project tools/MewUITextRenderingPatch.Tests -c Release -f net8.0 --no-restore
-dotnet run --project tools/MewUITextRenderingPatch.Tests -c Release -f net10.0 --no-restore
+islands_test_dir=$(mktemp -d "${TMPDIR:-/tmp}/islands-test.XXXXXXXX")
+islands_test_version=0.1.0-local
+(cd src && dotnet pack MewUI.Themes.Islands -c Release \
+  -p:PackageVersion="$islands_test_version" -o "$islands_test_dir/feed")
+dotnet restore tools/MewUITextRenderingPatch.Tests -p:IslandsPackageVersion="$islands_test_version" \
+  --packages "$islands_test_dir/packages" --source "$islands_test_dir/feed" --source https://api.nuget.org/v3/index.json
+dotnet run --project tools/MewUITextRenderingPatch.Tests -c Release -f net8.0 --no-restore \
+  -p:IslandsPackageVersion="$islands_test_version"
+dotnet run --project tools/MewUITextRenderingPatch.Tests -c Release -f net10.0 --no-restore \
+  -p:IslandsPackageVersion="$islands_test_version"
 dotnet publish tools/MewUITextRenderingPatch.Tests -c Release -f net10.0 -r osx-arm64 \
-  -p:PublishAot=true --packages /tmp/islands-test-packages -o /tmp/islands-text-aot
-/tmp/islands-text-aot/MewUITextRenderingPatch.Tests
+  -p:PublishAot=true -p:IslandsPackageVersion="$islands_test_version" \
+  --packages "$islands_test_dir/packages" --source "$islands_test_dir/feed" --source https://api.nuget.org/v3/index.json \
+  -o "$islands_test_dir/net10-aot"
+"$islands_test_dir/net10-aot/MewUITextRenderingPatch.Tests"
+
+# Run with the .NET 11 SDK to verify that ILC includes the patched backend.
+dotnet publish tools/MewUITextRenderingPatch.Tests -c Release -p:TargetFrameworks=net11.0 -f net11.0 -r osx-arm64 \
+  -p:PublishAot=true -p:IslandsPackageVersion="$islands_test_version" \
+  --packages "$islands_test_dir/packages" --source "$islands_test_dir/feed" --source https://api.nuget.org/v3/index.json \
+  -o "$islands_test_dir/net11-aot"
+"$islands_test_dir/net11-aot/MewUITextRenderingPatch.Tests"
 ```
 
 The checks invoke the actual patched selector with sentinel pointers, including 100%, 125%,

@@ -38,7 +38,9 @@
     <ItemGroup Condition="'$(_IslandsPatchedTextBackend)' != ''">
       <_ResolvedCopyLocalPublishAssets Remove="@(_ResolvedCopyLocalPublishAssets)"
                                       Condition="'%(Filename)%(Extension)' == 'Aprillz.MewUI.Backend.Direct2D.dll'" />
-      <_ResolvedCopyLocalPublishAssets Include="$(_IslandsPatchedTextBackend)" DestinationSubPath="Aprillz.MewUI.Backend.Direct2D.dll" AssetType="runtime" CopyToPublishDirectory="PreserveNewest" />
+      <!-- The patched path differs from the NuGet runtime asset, so the SDK cannot classify it
+           by path. .NET 11 NativeAOT only passes publish items marked PostprocessAssembly to ILC. -->
+      <_ResolvedCopyLocalPublishAssets Include="$(_IslandsPatchedTextBackend)" DestinationSubPath="Aprillz.MewUI.Backend.Direct2D.dll" AssetType="runtime" CopyToPublishDirectory="PreserveNewest" PostprocessAssembly="true" />
     </ItemGroup>
   </Target>
 </Project>
