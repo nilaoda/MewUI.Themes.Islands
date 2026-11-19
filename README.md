@@ -24,7 +24,7 @@ Add the theme to a MewUI application:
 
 ```sh
 dotnet add package Aprillz.MewUI --version 0.22.1
-dotnet add package MewUI.Themes.Islands --version 0.1.0-preview.5
+dotnet add package MewUI.Themes.Islands --version 0.1.0-preview.6
 ```
 
 If your application already references MewUI's individual platform and rendering packages,
@@ -36,9 +36,9 @@ component APIs and window integration.
 
 ## Preview status
 
-The current source version is `0.1.0-preview.5`, retaining native Linux title bars without duplicate
-captions and automatically correcting X11 popup dismissal. Title headings also reserve toolbar space
-instead of overlapping actions.
+The current source version is `0.1.0-preview.6`. It fixes .NET 11 Native AOT publishing with the
+Windows Direct2D text workaround and aligns buttons, text fields, row states, tooltips, sliders,
+and progress bars with the Islands design references.
 See the NuGet badge above for the latest published version. Public APIs may change between preview releases.
 The current dependency and integration baseline is MewUI `0.22.1`.
 

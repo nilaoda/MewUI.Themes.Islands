@@ -10,9 +10,9 @@ and reusable workspace, menu and window components.
 
 ## Preview status and compatibility
 
-Version `0.1.0-preview.5` retains the native Linux title bar without duplicate headings or caption
-buttons, and automatically corrects X11 popup dismissal on native title-bar interaction and owner
-geometry changes. Long title headings reserve toolbar space and trim before reaching the actions.
+Version `0.1.0-preview.6` includes the patched Windows Direct2D backend in .NET 11 Native AOT
+compilation. It also updates button and text-field surfaces, list and tree spacing and hover states,
+tooltip colors, slider thumbs, and progress bar thickness to match the Islands references.
 Public APIs may change between preview releases.
 It is built and tested against MewUI `0.22.1`; later MewUI versions need separate verification,
 especially for window integration and dialog keyboard routing.
@@ -30,7 +30,7 @@ In a MewUI application:
 
 ```sh
 dotnet add package Aprillz.MewUI --version 0.22.1
-dotnet add package MewUI.Themes.Islands --version 0.1.0-preview.5
+dotnet add package MewUI.Themes.Islands --version 0.1.0-preview.6
 ```
 
 If the application already uses MewUI's individual platform/backend packages, keep that setup
